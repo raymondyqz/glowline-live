@@ -1,12 +1,36 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
+import { useSessionContext } from "@supabase/auth-helpers-react";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { session } = useSessionContext();
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to sign out",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Signed out successfully",
+      });
+      navigate("/login");
+    }
+  };
 
   return (
     <nav className="fixed w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-100">
@@ -39,6 +63,23 @@ const Navigation = () => {
             >
               About
             </Link>
+            {session ? (
+              <Button
+                variant="outline"
+                onClick={handleLogout}
+                className="ml-4"
+              >
+                Sign Out
+              </Button>
+            ) : (
+              <Button
+                variant="default"
+                onClick={() => navigate("/login")}
+                className="ml-4"
+              >
+                Sign In
+              </Button>
+            )}
           </div>
 
           <div className="sm:hidden flex items-center">
@@ -78,6 +119,29 @@ const Navigation = () => {
             >
               About
             </Link>
+            {session ? (
+              <Button
+                variant="outline"
+                onClick={() => {
+                  handleLogout();
+                  setIsOpen(false);
+                }}
+                className="w-full mt-2"
+              >
+                Sign Out
+              </Button>
+            ) : (
+              <Button
+                variant="default"
+                onClick={() => {
+                  navigate("/login");
+                  setIsOpen(false);
+                }}
+                className="w-full mt-2"
+              >
+                Sign In
+              </Button>
+            )}
           </div>
         </div>
       )}
