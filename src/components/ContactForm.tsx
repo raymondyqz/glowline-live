@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Mail } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -14,13 +15,16 @@ const ContactForm = () => {
     e.preventDefault();
     
     try {
-      // In a real implementation, you would send this to your backend
-      // For now, we'll just simulate the email being sent
-      console.log("Sending email to info@glowline.io", formData);
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([formData]);
+      
+      if (error) throw error;
       
       toast.success("Thank you for your message! We'll be in touch soon.");
       setFormData({ name: "", email: "", phone: "", message: "" });
     } catch (error) {
+      console.error('Error submitting form:', error);
       toast.error("Something went wrong. Please try again later.");
     }
   };
