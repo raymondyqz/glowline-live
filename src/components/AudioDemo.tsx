@@ -63,13 +63,13 @@ const AudioDemo = () => {
   }, [toast]);
 
   return (
-    <section className="py-20 bg-purple-100/50" id="demo">
+    <section className="py-20 bg-glowline-rose/5" id="demo">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-glowline-navy mb-4">
             Hear Glowline in Action
           </h2>
-          <p className="text-purple-600 mb-8">
+          <p className="text-gray-600 mb-8">
             Listen to how our AI receptionist handles real-world scenarios with natural,
             professional conversations.
           </p>
@@ -97,7 +97,7 @@ const AudioDemo = () => {
             ) : (
               <p className="text-red-500">Audio file not found</p>
             )}
-            <p className="mt-4 text-sm text-purple-500">
+            <p className="mt-4 text-sm text-gray-500">
               Experience how Glowline handles appointment scheduling, inquiries, and more.
             </p>
           </div>
