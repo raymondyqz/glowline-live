@@ -1,39 +1,8 @@
-import { useState, useEffect } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 
-const supabase = createClient(
-  "https://kuyjsfpzfysiwczrzefx.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1eWpzZnB6ZnlzaXdjenJ6ZWZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA5MjIwNjgsImV4cCI6MjA0NjQ5ODA2OH0.XQp1Kuw4NxCDeSp3p_LeZHNrZvxw3RBHB3O4HFMGBLQ"
-);
-
 const AudioDemo = () => {
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchAudioUrl = async () => {
-      try {
-        const { data, error } = await supabase.storage
-          .from('audio')
-          .getPublicUrl('demo.mp3');
-        
-        if (error) {
-          setError(error.message);
-          return;
-        }
-
-        setAudioUrl(data.publicUrl);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAudioUrl();
-  }, []);
 
   return (
     <section className="py-20 bg-glowline-rose/5" id="demo">
@@ -48,21 +17,16 @@ const AudioDemo = () => {
           </p>
           
           <div className="bg-white p-8 rounded-lg shadow-lg">
-            {loading ? (
-              <Skeleton className="w-full h-12" />
-            ) : error ? (
-              <p className="text-red-500">{error}</p>
-            ) : audioUrl ? (
-              <audio
-                controls
-                className="w-full"
-                src={audioUrl}
-              >
-                Your browser does not support the audio element.
-              </audio>
-            ) : (
-              <p className="text-red-500">Failed to load audio demo</p>
-            )}
+            <audio
+              controls
+              className="w-full"
+              src="https://drive.google.com/uc?export=download&id=1Qo3yt-TBNfRw4zcpYoUbZTJ_yA4jRX4q"
+              onLoadStart={() => setLoading(true)}
+              onLoadedData={() => setLoading(false)}
+            >
+              Your browser does not support the audio element.
+            </audio>
+            {loading && <Skeleton className="w-full h-12 absolute top-0 left-0" />}
             <p className="mt-4 text-sm text-gray-500">
               Experience how Glowline handles appointment scheduling, inquiries, and more.
             </p>
