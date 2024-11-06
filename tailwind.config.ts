@@ -52,10 +52,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        theme: {
-          light: "#F3E8FF",
-          DEFAULT: "#9333EA",
-          dark: "#6B21A8",
+        glowline: {
+          rose: "#F7CAC9",
+          white: "#FDFBF9",
+          navy: "#2D3047",
         },
       },
       borderRadius: {

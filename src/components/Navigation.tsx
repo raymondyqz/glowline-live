@@ -33,12 +33,12 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="fixed w-full bg-white/90 backdrop-blur-md z-50 border-b border-purple-100">
+    <nav className="fixed w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <span className="text-2xl font-bold text-purple-900">Glowline</span>
+              <span className="text-2xl font-bold text-glowline-navy">Glowline</span>
             </Link>
           </div>
           
@@ -47,8 +47,8 @@ const Navigation = () => {
               to="/"
               className={`${
                 isActive("/")
-                  ? "text-purple-900"
-                  : "text-purple-600 hover:text-purple-900"
+                  ? "text-glowline-navy"
+                  : "text-gray-500 hover:text-glowline-navy"
               } px-3 py-2 text-sm font-medium transition-colors`}
             >
               Home
@@ -57,8 +57,8 @@ const Navigation = () => {
               to="/about"
               className={`${
                 isActive("/about")
-                  ? "text-purple-900"
-                  : "text-purple-600 hover:text-purple-900"
+                  ? "text-glowline-navy"
+                  : "text-gray-500 hover:text-glowline-navy"
               } px-3 py-2 text-sm font-medium transition-colors`}
             >
               About
@@ -67,7 +67,7 @@ const Navigation = () => {
               <Button
                 variant="outline"
                 onClick={handleLogout}
-                className="ml-4 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white"
+                className="ml-4"
               >
                 Sign Out
               </Button>
@@ -75,7 +75,7 @@ const Navigation = () => {
               <Button
                 variant="default"
                 onClick={() => navigate("/login")}
-                className="ml-4 bg-purple-600 text-white hover:bg-purple-700"
+                className="ml-4"
               >
                 Sign In
               </Button>
@@ -85,7 +85,7 @@ const Navigation = () => {
           <div className="sm:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-purple-600 hover:text-purple-900"
+              className="text-gray-500 hover:text-glowline-navy"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -95,14 +95,14 @@ const Navigation = () => {
 
       {/* Mobile menu */}
       {isOpen && (
-        <div className="sm:hidden bg-white border-b border-purple-100">
+        <div className="sm:hidden bg-white border-b border-gray-100">
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
               to="/"
               className={`${
                 isActive("/")
-                  ? "text-purple-900"
-                  : "text-purple-600 hover:text-purple-900"
+                  ? "text-glowline-navy"
+                  : "text-gray-500 hover:text-glowline-navy"
               } block px-3 py-2 text-base font-medium`}
               onClick={() => setIsOpen(false)}
             >
@@ -112,8 +112,8 @@ const Navigation = () => {
               to="/about"
               className={`${
                 isActive("/about")
-                  ? "text-purple-900"
-                  : "text-purple-600 hover:text-purple-900"
+                  ? "text-glowline-navy"
+                  : "text-gray-500 hover:text-glowline-navy"
               } block px-3 py-2 text-base font-medium`}
               onClick={() => setIsOpen(false)}
             >
@@ -126,7 +126,7 @@ const Navigation = () => {
                   handleLogout();
                   setIsOpen(false);
                 }}
-                className="w-full mt-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white"
+                className="w-full mt-2"
               >
                 Sign Out
               </Button>
@@ -137,7 +137,7 @@ const Navigation = () => {
                   navigate("/login");
                   setIsOpen(false);
                 }}
-                className="w-full mt-2 bg-purple-600 text-white hover:bg-purple-700"
+                className="w-full mt-2"
               >
                 Sign In
               </Button>
