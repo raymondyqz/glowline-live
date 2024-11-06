@@ -11,18 +11,42 @@ const AudioDemo = () => {
   useEffect(() => {
     const getAudioUrl = async () => {
       try {
-        const { data, error } = await supabase
+        // First, list files in the audio bucket to get the actual filename
+        const { data: files, error: listError } = await supabase
           .storage
           .from('audio')
-          .createSignedUrl('demo-call.mp3', 3600); // URL valid for 1 hour
+          .list();
 
-        if (error) {
-          throw error;
+        if (listError) {
+          console.error('Error listing files:', listError);
+          throw listError;
         }
 
-        if (data?.signedUrl) {
-          setAudioUrl(data.signedUrl);
+        if (!files || files.length === 0) {
+          throw new Error('No audio files found in the bucket');
         }
+
+        // Get the first audio file from the bucket
+        const audioFile = files[0];
+        console.log('Found audio file:', audioFile.name);
+
+        // Create a signed URL for the file
+        const { data: urlData, error: urlError } = await supabase
+          .storage
+          .from('audio')
+          .createSignedUrl(audioFile.name, 3600);
+
+        if (urlError) {
+          console.error('Error creating signed URL:', urlError);
+          throw urlError;
+        }
+
+        if (!urlData?.signedUrl) {
+          throw new Error('No signed URL generated');
+        }
+
+        console.log('Generated signed URL:', urlData.signedUrl);
+        setAudioUrl(urlData.signedUrl);
       } catch (error) {
         console.error('Error loading audio:', error);
         toast({
@@ -51,19 +75,25 @@ const AudioDemo = () => {
           </p>
           
           <div className="bg-white p-8 rounded-lg shadow-lg relative">
-            {audioUrl ? (
+            {loading ? (
+              <Skeleton className="w-full h-12" />
+            ) : audioUrl ? (
               <audio
                 controls
                 className="w-full"
                 preload="auto"
                 src={audioUrl}
-                onLoadStart={() => setLoading(true)}
-                onLoadedData={() => setLoading(false)}
+                onError={(e) => {
+                  console.error('Audio playback error:', e);
+                  toast({
+                    variant: "destructive",
+                    title: "Audio playback error",
+                    description: "There was an error playing the audio file.",
+                  });
+                }}
               >
                 Your browser does not support the audio element.
               </audio>
-            ) : loading ? (
-              <Skeleton className="w-full h-12" />
             ) : (
               <p className="text-red-500">Audio file not found</p>
             )}
