@@ -16,10 +16,11 @@ const AudioDemo = () => {
             professional conversations.
           </p>
           
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="bg-white p-8 rounded-lg shadow-lg relative">
             <audio
               controls
               className="w-full"
+              preload="auto"
               src="https://drive.google.com/uc?export=download&id=1Qo3yt-TBNfRw4zcpYoUbZTJ_yA4jRX4q"
               onLoadStart={() => setLoading(true)}
               onLoadedData={() => setLoading(false)}
