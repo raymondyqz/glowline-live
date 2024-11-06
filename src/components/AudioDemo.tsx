@@ -10,6 +10,7 @@ const supabase = createClient(
 const AudioDemo = () => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAudioUrl = async () => {
@@ -19,15 +20,13 @@ const AudioDemo = () => {
           .getPublicUrl('demo.mp3');
         
         if (error) {
-          console.error('Error fetching audio:', error);
+          setError(error.message);
           return;
         }
 
-        if (data) {
-          setAudioUrl(data.publicUrl);
-        }
-      } catch (error) {
-        console.error('Error:', error);
+        setAudioUrl(data.publicUrl);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
       } finally {
         setLoading(false);
       }
@@ -51,6 +50,8 @@ const AudioDemo = () => {
           <div className="bg-white p-8 rounded-lg shadow-lg">
             {loading ? (
               <Skeleton className="w-full h-12" />
+            ) : error ? (
+              <p className="text-red-500">{error}</p>
             ) : audioUrl ? (
               <audio
                 controls
