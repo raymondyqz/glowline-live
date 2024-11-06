@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Login from "./pages/Login";
+import Privacy from "./pages/Privacy";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/privacy" element={<Privacy />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
