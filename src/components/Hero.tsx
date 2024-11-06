@@ -8,7 +8,7 @@ const Hero = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center max-w-4xl mx-auto pt-20">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-glowline-navy mb-6 animate-fadeIn">
-            Your 24/7 AI Receptionist for Beauty & Wellness
+            Revolutionize Your Practice with Glowline's 24/7 AI Receptionist
           </h1>
           <p className="text-xl text-gray-600 mb-8 animate-fadeIn" style={{ animationDelay: "0.2s" }}>
             Never miss a booking. Let our AI handle your calls while you focus on what matters most - your clients.
