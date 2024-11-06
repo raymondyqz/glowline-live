@@ -20,10 +20,10 @@ const AudioDemo = () => {
   };
 
   return (
-    <section className="py-20 bg-glowline-rose/5" id="demo">
+    <section className="py-20 bg-white" id="demo">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-glowline-navy mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             Hear Glowline in Action
           </h2>
           <p className="text-gray-600 mb-8">
@@ -31,7 +31,7 @@ const AudioDemo = () => {
             professional conversations.
           </p>
           
-          <div className="bg-white p-8 rounded-lg shadow-lg relative">
+          <div className="bg-white p-8 rounded-lg shadow-lg">
             <audio
               ref={audioRef}
               className="hidden"
