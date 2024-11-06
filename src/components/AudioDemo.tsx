@@ -1,23 +1,42 @@
 import { useState, useEffect } from "react";
 import { Skeleton } from "./ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "./ui/use-toast";
 
 const AudioDemo = () => {
   const [loading, setLoading] = useState(true);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     const getAudioUrl = async () => {
-      const { data: { publicUrl } } = supabase
-        .storage
-        .from('audio')
-        .getPublicUrl('demo-call.mp3');
-      
-      setAudioUrl(publicUrl);
+      try {
+        const { data, error } = await supabase
+          .storage
+          .from('audio')
+          .createSignedUrl('demo-call.mp3', 3600); // URL valid for 1 hour
+
+        if (error) {
+          throw error;
+        }
+
+        if (data?.signedUrl) {
+          setAudioUrl(data.signedUrl);
+        }
+      } catch (error) {
+        console.error('Error loading audio:', error);
+        toast({
+          variant: "destructive",
+          title: "Error loading audio",
+          description: "Please try refreshing the page.",
+        });
+      } finally {
+        setLoading(false);
+      }
     };
 
     getAudioUrl();
-  }, []);
+  }, [toast]);
 
   return (
     <section className="py-20 bg-glowline-rose/5" id="demo">
@@ -32,7 +51,7 @@ const AudioDemo = () => {
           </p>
           
           <div className="bg-white p-8 rounded-lg shadow-lg relative">
-            {audioUrl && (
+            {audioUrl ? (
               <audio
                 controls
                 className="w-full"
@@ -43,8 +62,11 @@ const AudioDemo = () => {
               >
                 Your browser does not support the audio element.
               </audio>
+            ) : loading ? (
+              <Skeleton className="w-full h-12" />
+            ) : (
+              <p className="text-red-500">Audio file not found</p>
             )}
-            {loading && <Skeleton className="w-full h-12 absolute top-0 left-0" />}
             <p className="mt-4 text-sm text-gray-500">
               Experience how Glowline handles appointment scheduling, inquiries, and more.
             </p>
