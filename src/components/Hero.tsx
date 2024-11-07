@@ -14,19 +14,19 @@ const Hero = () => {
             Never miss a booking. Let our AI handle your calls while you focus on what matters most - your clients.
           </p>
           <div className="flex justify-center space-x-4 animate-fadeIn" style={{ animationDelay: "0.4s" }}>
-            <Link
-              to="#contact"
+            <a
+              href="#contact"
               className="bg-purple-600 text-white px-8 py-3 rounded-full font-medium hover:bg-purple-700 transition-all flex items-center group"
             >
               Get Started
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
-            </Link>
-            <Link
-              to="#demo"
+            </a>
+            <a
+              href="#demo"
               className="bg-white text-purple-600 px-8 py-3 rounded-full font-medium border border-purple-600 hover:bg-purple-50 transition-all"
             >
               Listen to Demo
-            </Link>
+            </a>
           </div>
         </div>
       </div>

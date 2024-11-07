@@ -67,7 +67,7 @@ const AudioDemo = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-glowline-navy mb-4">
-            Hear Glowline in Action
+            Hear the Glow
           </h2>
           <p className="text-gray-600 mb-8">
             Listen to how our AI receptionist handles real-world scenarios with natural,
