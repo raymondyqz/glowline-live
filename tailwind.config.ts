@@ -52,10 +52,17 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        glowline: {
-          rose: "#F7CAC9",
-          white: "#FDFBF9",
-          navy: "#2D3047",
+        purple: {
+          50: "#F6F4F9",
+          100: "#EDE9F3",
+          200: "#D5CBE3",
+          300: "#BBACD2",
+          400: "#8870B1",
+          500: "#553390",
+          600: "#4D2E82",
+          700: "#331F56",
+          800: "#261741",
+          900: "#1A102B",
         },
       },
       borderRadius: {

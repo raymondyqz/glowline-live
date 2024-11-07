@@ -19,7 +19,7 @@ const features = [
   {
     icon: Heart,
     title: "Industry Expertise",
-    description: "Specialized in beauty, skin care, and wellness terminology and protocols.",
+    description: "Specialized in beauty, wellness, and veterinary care terminology and protocols.",
   },
 ];
 
@@ -28,11 +28,11 @@ const Features = () => {
     <section className="py-20 bg-white" id="features">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-glowline-navy mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-purple-800 mb-4">
             Why Choose Glowline?
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Our AI receptionist is designed specifically for beauty and wellness businesses,
+          <p className="text-purple-700 max-w-2xl mx-auto">
+            Our AI receptionist is designed specifically for beauty, wellness, and veterinary businesses,
             providing a seamless experience for both you and your clients.
           </p>
         </div>
@@ -41,15 +41,15 @@ const Features = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="p-6 rounded-lg border border-gray-100 hover:border-glowline-rose transition-all hover:shadow-lg"
+              className="p-6 rounded-lg border border-purple-100 hover:border-purple-300 transition-all hover:shadow-lg bg-purple-50/50"
             >
-              <div className="w-12 h-12 bg-glowline-rose/10 rounded-full flex items-center justify-center mb-4">
-                <feature.icon className="w-6 h-6 text-glowline-navy" />
+              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                <feature.icon className="w-6 h-6 text-purple-600" />
               </div>
-              <h3 className="text-xl font-semibold text-glowline-navy mb-2">
+              <h3 className="text-xl font-semibold text-purple-800 mb-2">
                 {feature.title}
               </h3>
-              <p className="text-gray-600">
+              <p className="text-purple-700">
                 {feature.description}
               </p>
             </div>
