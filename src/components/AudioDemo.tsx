@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Skeleton } from "./ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "./ui/use-toast";
+import { Volume2 } from "lucide-react";
 
 const AudioDemo = () => {
   const [loading, setLoading] = useState(true);
@@ -63,18 +64,27 @@ const AudioDemo = () => {
   }, [toast]);
 
   return (
-    <section className="py-20 bg-glowline-rose/5" id="demo">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 bg-purple-50/50 relative overflow-hidden" id="demo">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute right-0 top-0 w-96 h-96 bg-purple-100/50 rounded-full blur-3xl" />
+        <div className="absolute -left-48 bottom-0 w-96 h-96 bg-purple-100/50 rounded-full blur-3xl" />
+      </div>
+      
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-glowline-navy mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-6">
+            <Volume2 className="w-8 h-8 text-purple-600" />
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-bold text-purple-800 mb-4">
             Hear the Glow
           </h2>
-          <p className="text-gray-600 mb-8">
+          <p className="text-purple-700 mb-8">
             Listen to how our AI receptionist handles real-world scenarios with natural,
             professional conversations.
           </p>
           
-          <div className="bg-white p-8 rounded-lg shadow-lg relative">
+          <div className="bg-white p-8 rounded-2xl shadow-xl backdrop-blur-lg border-2 border-purple-100">
             {loading ? (
               <Skeleton className="w-full h-12" />
             ) : audioUrl ? (
@@ -97,7 +107,7 @@ const AudioDemo = () => {
             ) : (
               <p className="text-red-500">Audio file not found</p>
             )}
-            <p className="mt-4 text-sm text-gray-500">
+            <p className="mt-6 text-sm text-purple-600">
               Experience how Glowline handles appointment scheduling, inquiries, and more.
             </p>
           </div>

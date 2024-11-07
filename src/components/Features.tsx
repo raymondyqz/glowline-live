@@ -25,8 +25,14 @@ const features = [
 
 const Features = () => {
   return (
-    <section className="py-20 bg-white" id="features">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 bg-white relative overflow-hidden" id="features">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -right-40 top-20 w-96 h-96 bg-purple-50 rounded-full blur-3xl" />
+        <div className="absolute -left-40 bottom-20 w-96 h-96 bg-purple-50 rounded-full blur-3xl" />
+      </div>
+      
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-purple-800 mb-4">
             Why Choose Glowline?
@@ -41,12 +47,12 @@ const Features = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="p-6 rounded-lg border border-purple-100 hover:border-purple-300 transition-all hover:shadow-lg bg-purple-50/50"
+              className="group p-8 rounded-2xl border-2 border-purple-100 hover:border-purple-300 transition-all hover:shadow-xl bg-white backdrop-blur-lg hover:-translate-y-1 transform"
             >
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-                <feature.icon className="w-6 h-6 text-purple-600" />
+              <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-200 transition-colors">
+                <feature.icon className="w-7 h-7 text-purple-600" />
               </div>
-              <h3 className="text-xl font-semibold text-purple-800 mb-2">
+              <h3 className="text-xl font-semibold text-purple-800 mb-3">
                 {feature.title}
               </h3>
               <p className="text-purple-700">
