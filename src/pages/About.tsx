@@ -3,6 +3,8 @@ import Footer from "../components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Linkedin } from "lucide-react";
 
 const About = () => {
   return (
@@ -50,6 +52,15 @@ const About = () => {
                         </Avatar>
                       </div>
                       <h3 className="text-xl font-bold text-purple-500 mb-2">Isabel Greenslade</h3>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="mb-4"
+                        onClick={() => window.open('https://www.linkedin.com/in/isabel-greenslade/', '_blank')}
+                      >
+                        <Linkedin className="w-4 h-4 mr-2" />
+                        LinkedIn
+                      </Button>
                       <p className="text-gray-600 text-center mb-2">University of Oxford, Economics & Management</p>
                       <p className="text-sm text-gray-500 text-center">
                         IB at Greenhill & early-stage VC at Future Planet Capital
@@ -73,6 +84,15 @@ const About = () => {
                         </Avatar>
                       </div>
                       <h3 className="text-xl font-bold text-purple-500 mb-2">Raymond Zhao</h3>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="mb-4"
+                        onClick={() => window.open('https://www.linkedin.com/in/raymond-zhao-oxford/', '_blank')}
+                      >
+                        <Linkedin className="w-4 h-4 mr-2" />
+                        LinkedIn
+                      </Button>
                       <p className="text-gray-600 text-center mb-2">University of Oxford, Mathematics & Statistics</p>
                       <p className="text-sm text-gray-500 text-center">
                         Built ML / Automation tools at Goldman Sachs & startups
