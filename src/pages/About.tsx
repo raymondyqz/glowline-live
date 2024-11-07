@@ -1,6 +1,7 @@
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
+import { supabase } from "@/integrations/supabase/client";
 
 const About = () => {
   return (
@@ -39,7 +40,7 @@ const About = () => {
                     <div className="flex flex-col items-center">
                       <div className="w-48 h-48 rounded-full overflow-hidden mb-4">
                         <img 
-                          src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7"
+                          src={`${supabase.storage.from('profile-images').getPublicUrl('isabel-profile.jpg').data.publicUrl}`}
                           alt="Isabel Greenslade" 
                           className="w-full h-full object-cover"
                         />
@@ -62,7 +63,7 @@ const About = () => {
                     <div className="flex flex-col items-center">
                       <div className="w-48 h-48 rounded-full overflow-hidden mb-4">
                         <img 
-                          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"
+                          src={`${supabase.storage.from('profile-images').getPublicUrl('raymond-profile.jpg').data.publicUrl}`}
                           alt="Raymond Zhao" 
                           className="w-full h-full object-cover"
                         />
