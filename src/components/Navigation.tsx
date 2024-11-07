@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, Sparkle, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -37,8 +37,9 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center">
-              <span className="text-2xl font-bold text-purple-800">Glowline</span>
+            <Link to="/" className="flex-shrink-0 flex items-center space-x-2">
+              <span className="text-2xl font-bold text-purple-800">glowline</span>
+              <Sparkle className="h-5 w-5 text-purple-600" />
             </Link>
           </div>
           
