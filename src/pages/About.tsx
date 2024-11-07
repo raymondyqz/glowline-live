@@ -39,7 +39,7 @@ const About = () => {
                     <div className="flex flex-col items-center">
                       <div className="w-48 h-48 rounded-full overflow-hidden mb-4">
                         <img 
-                          src="/isabel.jpg"
+                          src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7"
                           alt="Isabel Greenslade" 
                           className="w-full h-full object-cover"
                         />
