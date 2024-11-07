@@ -65,13 +65,25 @@ const Navigation = () => {
               About
             </Link>
             {session ? (
-              <Button
-                variant="outline"
-                onClick={handleLogout}
-                className="ml-4 border-purple-600 text-purple-600 hover:bg-purple-50"
-              >
-                Sign Out
-              </Button>
+              <>
+                <Link
+                  to="/settings"
+                  className={`${
+                    isActive("/settings")
+                      ? "text-purple-800"
+                      : "text-gray-500 hover:text-purple-700"
+                  } px-3 py-2 text-sm font-medium transition-colors`}
+                >
+                  Settings
+                </Link>
+                <Button
+                  variant="outline"
+                  onClick={handleLogout}
+                  className="ml-4 border-purple-600 text-purple-600 hover:bg-purple-50"
+                >
+                  Sign Out
+                </Button>
+              </>
             ) : (
               <Button
                 variant="default"
@@ -120,6 +132,19 @@ const Navigation = () => {
             >
               About
             </Link>
+            {session && (
+              <Link
+                to="/settings"
+                className={`${
+                  isActive("/settings")
+                    ? "text-purple-800"
+                    : "text-gray-500 hover:text-purple-700"
+                } block px-3 py-2 text-base font-medium`}
+                onClick={() => setIsOpen(false)}
+              >
+                Settings
+              </Link>
+            )}
             {session ? (
               <Button
                 variant="outline"
