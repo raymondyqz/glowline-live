@@ -51,9 +51,6 @@ const About = () => {
                       </div>
                       <h3 className="text-xl font-bold text-purple-500 mb-2">Isabel Greenslade</h3>
                       <p className="text-gray-600 text-center mb-2">University of Oxford, Economics & Management</p>
-                      <p className="text-sm text-gray-500 text-center mb-2">
-                        1st class graduate with Gibbs Prize & Saïd Foundation Prize
-                      </p>
                       <p className="text-sm text-gray-500 text-center">
                         IB at Greenhill & early-stage VC at Future Planet Capital
                       </p>
