@@ -1,13 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSessionContext } from "@supabase/auth-helpers-react";
+import { useQuery } from "@tanstack/react-query";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
+
+interface AccountDetails {
+  subscription_status: string;
+  subscription_type: string | null;
+  subscription_expiry: string | null;
+}
 
 const Settings = () => {
   const navigate = useNavigate();
   const { session } = useSessionContext();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!session) {
@@ -15,7 +24,41 @@ const Settings = () => {
     }
   }, [session, navigate]);
 
+  const { data: accountDetails, isLoading } = useQuery({
+    queryKey: ["accountDetails", session?.user?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("account_details")
+        .select("*")
+        .eq("user_id", session?.user?.id)
+        .single();
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to fetch account details",
+          variant: "destructive",
+        });
+        throw error;
+      }
+
+      return data as AccountDetails;
+    },
+    enabled: !!session?.user?.id,
+  });
+
   const userEmail = session?.user?.email;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-purple-50">
+        <Navigation />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-purple-50">
@@ -41,7 +84,26 @@ const Settings = () => {
               <CardTitle>Subscription Status</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">No active subscription</p>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm text-gray-500">Current Status</p>
+                  <p className="font-medium capitalize">{accountDetails?.subscription_status}</p>
+                </div>
+                {accountDetails?.subscription_type && (
+                  <div>
+                    <p className="text-sm text-gray-500">Subscription Type</p>
+                    <p className="font-medium capitalize">{accountDetails.subscription_type}</p>
+                  </div>
+                )}
+                {accountDetails?.subscription_expiry && (
+                  <div>
+                    <p className="text-sm text-gray-500">Expires On</p>
+                    <p className="font-medium">
+                      {new Date(accountDetails.subscription_expiry).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
 
