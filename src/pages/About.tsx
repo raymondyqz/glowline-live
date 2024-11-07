@@ -1,8 +1,30 @@
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
+import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 
 const About = () => {
+  const [isabelImageUrl, setIsabelImageUrl] = useState("");
+  const [raymondImageUrl, setRaymondImageUrl] = useState("");
+
+  useEffect(() => {
+    const loadImages = async () => {
+      const { data: isabelData } = await supabase.storage
+        .from('profile-images')
+        .getPublicUrl('isabel-profile.jpg');
+      
+      const { data: raymondData } = await supabase.storage
+        .from('profile-images')
+        .getPublicUrl('raymond-profile.jpg');
+
+      if (isabelData) setIsabelImageUrl(isabelData.publicUrl);
+      if (raymondData) setRaymondImageUrl(raymondData.publicUrl);
+    };
+
+    loadImages();
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -39,7 +61,7 @@ const About = () => {
                     <div className="flex flex-col items-center">
                       <div className="w-48 h-48 rounded-full overflow-hidden mb-4">
                         <img 
-                          src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7"
+                          src={isabelImageUrl || "/placeholder-profile.jpg"}
                           alt="Isabel Greenslade" 
                           className="w-full h-full object-cover"
                         />
@@ -62,7 +84,7 @@ const About = () => {
                     <div className="flex flex-col items-center">
                       <div className="w-48 h-48 rounded-full overflow-hidden mb-4">
                         <img 
-                          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"
+                          src={raymondImageUrl || "/placeholder-profile.jpg"}
                           alt="Raymond Zhao" 
                           className="w-full h-full object-cover"
                         />
