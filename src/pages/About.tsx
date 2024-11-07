@@ -68,10 +68,7 @@ const About = () => {
                         />
                       </div>
                       <h3 className="text-xl font-bold text-purple-500 mb-2">Raymond Zhao</h3>
-                      <p className="text-gray-600 text-center mb-2">Mathematics & Statistics</p>
-                      <p className="text-sm text-gray-500 text-center mb-2">
-                        Final-year undergraduate with integrated masters
-                      </p>
+                      <p className="text-gray-600 text-center mb-2">University of Oxford, Mathematics & Statistics</p>
                       <p className="text-sm text-gray-500 text-center">
                         Built ML / Automation tools at Goldman Sachs & startups
                       </p>
