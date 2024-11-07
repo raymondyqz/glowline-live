@@ -52,19 +52,18 @@ const About = () => {
                         </Avatar>
                       </div>
                       <h3 className="text-xl font-bold text-purple-500 mb-2">Isabel Greenslade</h3>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="mb-4"
-                        onClick={() => window.open('https://www.linkedin.com/in/isabel-greenslade/', '_blank')}
-                      >
-                        <Linkedin className="w-4 h-4 mr-2" />
-                        LinkedIn
-                      </Button>
                       <p className="text-gray-600 text-center mb-2">University of Oxford, Economics & Management</p>
-                      <p className="text-sm text-gray-500 text-center">
+                      <p className="text-sm text-gray-500 text-center mb-4">
                         IB at Greenhill & early-stage VC at Future Planet Capital
                       </p>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => window.open('https://www.linkedin.com/in/isabel-greenslade/', '_blank')}
+                        className="hover:bg-purple-100"
+                      >
+                        <Linkedin className="w-5 h-5 text-purple-500" />
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -84,19 +83,18 @@ const About = () => {
                         </Avatar>
                       </div>
                       <h3 className="text-xl font-bold text-purple-500 mb-2">Raymond Zhao</h3>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="mb-4"
-                        onClick={() => window.open('https://www.linkedin.com/in/raymond-zhao-oxford/', '_blank')}
-                      >
-                        <Linkedin className="w-4 h-4 mr-2" />
-                        LinkedIn
-                      </Button>
                       <p className="text-gray-600 text-center mb-2">University of Oxford, Mathematics & Statistics</p>
-                      <p className="text-sm text-gray-500 text-center">
+                      <p className="text-sm text-gray-500 text-center mb-4">
                         Built ML / Automation tools at Goldman Sachs & startups
                       </p>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => window.open('https://www.linkedin.com/in/raymond-zhao-oxford/', '_blank')}
+                        className="hover:bg-purple-100"
+                      >
+                        <Linkedin className="w-5 h-5 text-purple-500" />
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
