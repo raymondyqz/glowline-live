@@ -30,7 +30,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl backdrop-blur-lg border-2 border-purple-100">
         <div className="text-center">
-          <h2 className="mt-6 text-3xl font-bold text-purple-800">Welcome to Glowline</h2>
+          <h2 className="mt-6 text-3xl font-bold text-purple-800">Welcome to glowline</h2>
           <p className="mt-2 text-sm text-purple-600">Sign in to your account</p>
         </div>
         <Auth
@@ -49,13 +49,6 @@ const Login = () => {
           theme="light"
           providers={[]}
           redirectTo={window.location.origin}
-          onError={(error) => {
-            toast({
-              title: "Error",
-              description: error.message,
-              variant: "destructive",
-            });
-          }}
         />
       </div>
     </div>
