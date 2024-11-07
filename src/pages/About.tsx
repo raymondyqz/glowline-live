@@ -59,7 +59,7 @@ const About = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => window.open('https://www.linkedin.com/in/isabel-greenslade/', '_blank')}
+                        onClick={() => window.open('https://www.linkedin.com/in/isabelgreenslade/', '_blank')}
                         className="hover:bg-purple-100"
                       >
                         <Linkedin className="w-5 h-5 text-purple-500" />
@@ -90,7 +90,7 @@ const About = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => window.open('https://www.linkedin.com/in/raymond-zhao-oxford/', '_blank')}
+                        onClick={() => window.open('https://www.linkedin.com/in/raymondz1/', '_blank')}
                         className="hover:bg-purple-100"
                       >
                         <Linkedin className="w-5 h-5 text-purple-500" />
