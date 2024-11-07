@@ -2,6 +2,7 @@ import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const About = () => {
   return (
@@ -38,12 +39,15 @@ const About = () => {
                 <Card className="border-none shadow-lg">
                   <CardContent className="pt-6">
                     <div className="flex flex-col items-center">
-                      <div className="w-48 h-48 rounded-full overflow-hidden mb-4">
-                        <img 
-                          src={`${supabase.storage.from('profile-images').getPublicUrl('isabel-profile.jpg').data.publicUrl}`}
-                          alt="Isabel Greenslade" 
-                          className="w-full h-full object-cover"
-                        />
+                      <div className="w-48 h-48 mb-4">
+                        <Avatar className="w-48 h-48">
+                          <AvatarImage 
+                            src={`${supabase.storage.from('profile-images').getPublicUrl('isabel-profile.jpg').data.publicUrl}`}
+                            alt="Isabel Greenslade"
+                            className="object-cover"
+                          />
+                          <AvatarFallback className="text-4xl">IG</AvatarFallback>
+                        </Avatar>
                       </div>
                       <h3 className="text-xl font-bold text-purple-500 mb-2">Isabel Greenslade</h3>
                       <p className="text-gray-600 text-center mb-2">University of Oxford, Economics & Management</p>
@@ -61,12 +65,15 @@ const About = () => {
                 <Card className="border-none shadow-lg">
                   <CardContent className="pt-6">
                     <div className="flex flex-col items-center">
-                      <div className="w-48 h-48 rounded-full overflow-hidden mb-4">
-                        <img 
-                          src={`${supabase.storage.from('profile-images').getPublicUrl('raymond-profile.jpg').data.publicUrl}`}
-                          alt="Raymond Zhao" 
-                          className="w-full h-full object-cover"
-                        />
+                      <div className="w-48 h-48 mb-4">
+                        <Avatar className="w-48 h-48">
+                          <AvatarImage 
+                            src={`${supabase.storage.from('profile-images').getPublicUrl('raymond-profile.jpg').data.publicUrl}`}
+                            alt="Raymond Zhao"
+                            className="object-cover"
+                          />
+                          <AvatarFallback className="text-4xl">RZ</AvatarFallback>
+                        </Avatar>
                       </div>
                       <h3 className="text-xl font-bold text-purple-500 mb-2">Raymond Zhao</h3>
                       <p className="text-gray-600 text-center mb-2">University of Oxford, Mathematics & Statistics</p>
