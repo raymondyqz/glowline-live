@@ -34,7 +34,7 @@ const About = () => {
                 Close UG friends from the University of Oxford with a working relationship over 2+ years.
               </p>
               
-              <div className="grid md:grid-cols-2 gap-8 mb-16">
+              <div className="grid md:grid-cols-2 gap-8">
                 {/* Isabel Card */}
                 <Card className="border-none shadow-lg">
                   <CardContent className="pt-6">
@@ -83,17 +83,6 @@ const About = () => {
                     </div>
                   </CardContent>
                 </Card>
-              </div>
-
-              {/* Partner Logos */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center opacity-70">
-                <img src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7" alt="Oxford Seed Fund" className="h-12 object-contain" />
-                <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" alt="Greenhill" className="h-12 object-contain" />
-                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" alt="Future Planet Capital" className="h-12 object-contain" />
-                <img src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7" alt="University of Oxford" className="h-12 object-contain" />
-                <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" alt="Goldman Sachs" className="h-12 object-contain" />
-                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" alt="London Stock Exchange" className="h-12 object-contain" />
-                <img src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7" alt="bondIT" className="h-12 object-contain" />
               </div>
             </div>
           </div>
