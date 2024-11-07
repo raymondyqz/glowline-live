@@ -18,10 +18,10 @@ const About = () => {
             <div className="max-w-3xl mx-auto">
               <h1 className="text-4xl font-bold text-purple-500 mb-6">About glowline</h1>
               <p className="text-gray-600 mb-6">
-                glowline is revolutionizing how beauty and wellness businesses handle their customer communications. Our AI-powered receptionist service ensures that your business never misses a call, while maintaining the personal touch that your clients expect.
+                glowline is revolutionizing how beauty and hair businesses handle their customer communications. Our AI-powered receptionist service ensures that your business never misses a call, while maintaining the personal touch that your clients expect.
               </p>
               <p className="text-gray-600 mb-6">
-                Founded by industry experts and AI specialists, we understand the unique challenges faced by beauty and wellness businesses. Our solution is tailored specifically for salons, spas, and wellness centers, combining cutting-edge technology with industry-specific knowledge.
+                Founded by industry experts and AI specialists, we understand the unique challenges faced by beauty and hair businesses. Our solution is tailored specifically for salons, spas, and hair centers, combining cutting-edge technology with industry-specific knowledge.
               </p>
             </div>
           </div>

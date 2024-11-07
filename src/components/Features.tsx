@@ -19,7 +19,7 @@ const features = [
   {
     icon: Heart,
     title: "Industry Expertise",
-    description: "Specialized in beauty, wellness, and veterinary care terminology and protocols.",
+    description: "Specialized in beauty, hair, and veterinary care terminology and protocols.",
   },
 ];
 
@@ -38,7 +38,7 @@ const Features = () => {
             Why Choose Glowline?
           </h2>
           <p className="text-purple-700 max-w-2xl mx-auto">
-            Our AI receptionist is designed specifically for beauty, wellness, and veterinary businesses,
+            Our AI receptionist is designed specifically for beauty, hair, and veterinary businesses,
             providing a seamless experience for both you and your clients.
           </p>
         </div>
