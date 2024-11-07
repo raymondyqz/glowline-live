@@ -10,15 +10,20 @@ const Login = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
         toast({
           title: "Success",
           description: "Successfully logged in",
         });
         navigate("/");
       }
+      if (event === 'SIGNED_OUT') {
+        navigate("/login");
+      }
     });
+
+    return () => subscription.unsubscribe();
   }, [navigate, toast]);
 
   return (
@@ -43,6 +48,14 @@ const Login = () => {
           }}
           theme="light"
           providers={[]}
+          redirectTo={window.location.origin}
+          onError={(error) => {
+            toast({
+              title: "Error",
+              description: error.message,
+              variant: "destructive",
+            });
+          }}
         />
       </div>
     </div>
