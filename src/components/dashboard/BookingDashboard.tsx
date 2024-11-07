@@ -72,9 +72,7 @@ export function BookingDashboard({
                   <TableCell className="text-center">{call.phone}</TableCell>
                   <TableCell className="text-center">{call.reason}</TableCell>
                   <TableCell className="text-center">{call.duration}</TableCell>
-                  <TableCell className="text-center">
-                    {new Date(call.startTime).toLocaleTimeString()}
-                  </TableCell>
+                  <TableCell className="text-center">{new Date(call.startTime).toLocaleTimeString()}</TableCell>
                   <TableCell className="text-center">
                     <span className={`flex items-center justify-center ${getSentimentColor(call.sentiment)}`}>
                       {getSentimentEmoji(call.sentiment)}

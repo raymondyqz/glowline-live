@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { PieChart as PieChartComponent, Pie, Cell, ResponsiveContainer, Legend } from 'recharts'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { inputData, COLORS } from "@/lib/dashboardData"
+import { inputData, COLORS } from '@/lib/dashboardData'
 
 interface DashboardOverviewProps {
   onPageChange: (page: string) => void;
