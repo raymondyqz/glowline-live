@@ -39,7 +39,7 @@ const About = () => {
                     <div className="flex flex-col items-center">
                       <div className="w-48 h-48 rounded-full overflow-hidden mb-4">
                         <img 
-                          src="/isabel.jpg" 
+                          src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
                           alt="Isabel Greenslade" 
                           className="w-full h-full object-cover"
                         />
@@ -62,7 +62,7 @@ const About = () => {
                     <div className="flex flex-col items-center">
                       <div className="w-48 h-48 rounded-full overflow-hidden mb-4">
                         <img 
-                          src="/raymond.jpg" 
+                          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"
                           alt="Raymond Zhao" 
                           className="w-full h-full object-cover"
                         />
@@ -82,13 +82,13 @@ const About = () => {
 
               {/* Partner Logos */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center opacity-70">
-                <img src="/logos/osf.png" alt="Oxford Seed Fund" className="h-12 object-contain" />
-                <img src="/logos/greenhill.png" alt="Greenhill" className="h-12 object-contain" />
-                <img src="/logos/fpc.png" alt="Future Planet Capital" className="h-12 object-contain" />
-                <img src="/logos/oxford.png" alt="University of Oxford" className="h-12 object-contain" />
-                <img src="/logos/gs.png" alt="Goldman Sachs" className="h-12 object-contain" />
-                <img src="/logos/lse.png" alt="London Stock Exchange" className="h-12 object-contain" />
-                <img src="/logos/bondit.png" alt="bondIT" className="h-12 object-contain" />
+                <img src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7" alt="Oxford Seed Fund" className="h-12 object-contain" />
+                <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" alt="Greenhill" className="h-12 object-contain" />
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" alt="Future Planet Capital" className="h-12 object-contain" />
+                <img src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7" alt="University of Oxford" className="h-12 object-contain" />
+                <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" alt="Goldman Sachs" className="h-12 object-contain" />
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" alt="London Stock Exchange" className="h-12 object-contain" />
+                <img src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7" alt="bondIT" className="h-12 object-contain" />
               </div>
             </div>
           </div>
