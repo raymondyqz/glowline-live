@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface CallTranscriptProps {
   booking: any;
@@ -63,9 +64,11 @@ export function CallTranscript({ booking, transcript }: CallTranscriptProps) {
           </span>
         </div>
       </div>
-      <div className="bg-white p-4 rounded-md max-h-96 overflow-y-auto text-left shadow-inner">
-        {formatTranscript(transcript)}
-      </div>
+      <ScrollArea className="h-[400px] w-full rounded-md border p-4">
+        <div className="pr-4">
+          {formatTranscript(transcript)}
+        </div>
+      </ScrollArea>
       <Card className="bg-white/50 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-lg text-purple-800">Key Datapoints</CardTitle>
