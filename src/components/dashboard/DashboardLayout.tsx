@@ -13,6 +13,10 @@ import { inputData, transcripts } from '@/lib/dashboardData'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
+import { useQuery } from "@tanstack/react-query"
+import { supabase } from "@/integrations/supabase/client"
+import { useToast } from "@/components/ui/use-toast"
+import { Separator } from "@/components/ui/separator"
 
 export function DashboardLayout() {
   const [activePage, setActivePage] = useState('dashboard')
@@ -21,12 +25,45 @@ export function DashboardLayout() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const { session } = useSessionContext()
   const navigate = useNavigate()
+  const { toast } = useToast()
+
+  const { data: accountDetails, isLoading: isLoadingAccount } = useQuery({
+    queryKey: ['accountDetails', session?.user?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('account_details')
+        .select('*')
+        .eq('user_id', session?.user?.id)
+        .single()
+
+      if (error) throw error
+      return data
+    },
+    enabled: !!session?.user?.id,
+  })
 
   useEffect(() => {
     if (!session) {
       navigate("/login")
     }
   }, [session, navigate])
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      toast({
+        title: "Error signing out",
+        description: error.message,
+        variant: "destructive",
+      })
+    } else {
+      toast({
+        title: "Signed out successfully",
+        description: "You have been signed out of your account",
+      })
+      navigate("/login")
+    }
+  }
 
   return (
     <div className="flex h-screen bg-gradient-to-br from-pink-50 to-purple-50">
@@ -92,6 +129,53 @@ export function DashboardLayout() {
             <DialogTitle className="text-2xl font-bold text-purple-800">Settings</DialogTitle>
           </DialogHeader>
           <div className="space-y-6">
+            {/* Account Details */}
+            <Card className="bg-white/50 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-lg text-purple-800">Account Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-500">Email</p>
+                  <p className="font-medium">{session?.user?.email}</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Subscription Status */}
+            <Card className="bg-white/50 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-lg text-purple-800">Subscription Status</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {isLoadingAccount ? (
+                  <p>Loading subscription details...</p>
+                ) : (
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-sm text-gray-500">Current Status</p>
+                      <p className="font-medium capitalize">{accountDetails?.subscription_status}</p>
+                    </div>
+                    {accountDetails?.subscription_type && (
+                      <div>
+                        <p className="text-sm text-gray-500">Subscription Type</p>
+                        <p className="font-medium capitalize">{accountDetails.subscription_type}</p>
+                      </div>
+                    )}
+                    {accountDetails?.subscription_expiry && (
+                      <div>
+                        <p className="text-sm text-gray-500">Expires On</p>
+                        <p className="font-medium">
+                          {new Date(accountDetails.subscription_expiry).toLocaleDateString()}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* System Settings */}
             <Card className="bg-white/50 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-lg text-purple-800">System Settings</CardTitle>
@@ -111,6 +195,8 @@ export function DashboardLayout() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* AI Settings */}
             <Card className="bg-white/50 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-lg text-purple-800">AI Agent Settings</CardTitle>
@@ -130,6 +216,19 @@ export function DashboardLayout() {
                 </div>
               </CardContent>
             </Card>
+
+            <Separator className="my-4" />
+
+            {/* Logout Button */}
+            <div className="flex justify-end">
+              <Button
+                variant="destructive"
+                onClick={handleLogout}
+                className="w-full sm:w-auto"
+              >
+                Sign Out
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
