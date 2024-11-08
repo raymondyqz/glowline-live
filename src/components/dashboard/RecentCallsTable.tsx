@@ -1,7 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { format } from "date-fns"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { format } from "date-fns"
 import { useState } from "react"
 import { CallTranscript } from "./CallTranscript"
 
@@ -21,6 +20,11 @@ export function RecentCallsTable({ recentCalls }: RecentCallsTableProps) {
     return sentiment >= 66 ? 'text-green-600' : sentiment >= 33 ? 'text-orange-500' : 'text-red-600'
   }
 
+  const handleRowClick = (call: any) => {
+    setSelectedCall(call)
+    setIsTranscriptOpen(true)
+  }
+
   return (
     <>
       <Table>
@@ -31,12 +35,15 @@ export function RecentCallsTable({ recentCalls }: RecentCallsTableProps) {
             <TableHead className="text-center">Duration</TableHead>
             <TableHead className="text-center">Start Time</TableHead>
             <TableHead className="text-center">Sentiment</TableHead>
-            <TableHead className="text-center">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {recentCalls.map((call) => (
-            <TableRow key={call.id}>
+            <TableRow 
+              key={call.id}
+              onClick={() => handleRowClick(call)}
+              className="cursor-pointer hover:bg-purple-50"
+            >
               <TableCell className="text-center">{call.phone}</TableCell>
               <TableCell className="text-center">{call.reason}</TableCell>
               <TableCell className="text-center">{call.duration}</TableCell>
@@ -48,19 +55,6 @@ export function RecentCallsTable({ recentCalls }: RecentCallsTableProps) {
                   {getSentimentEmoji(call.sentiment)}
                   <span className="ml-1">{call.sentiment}%</span>
                 </span>
-              </TableCell>
-              <TableCell className="text-center">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="bg-purple-100 text-black hover:bg-purple-200"
-                  onClick={() => {
-                    setSelectedCall(call)
-                    setIsTranscriptOpen(true)
-                  }}
-                >
-                  View Transcript
-                </Button>
               </TableCell>
             </TableRow>
           ))}
