@@ -1,53 +1,99 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Bar, BarChart, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { ChartContainer } from "@/components/ui/chart"
+import { supabase } from "@/integrations/supabase/client"
+import { useSessionContext } from "@supabase/auth-helpers-react"
+import { format, subDays } from 'date-fns'
 
 interface BookingDashboardProps {
-  bookings: any[];
-  recentCalls: any[];
   onBookingSelect: (booking: any) => void;
   onTranscriptOpen: (open: boolean) => void;
 }
 
 export function BookingDashboard({ 
-  bookings, 
-  recentCalls, 
   onBookingSelect, 
   onTranscriptOpen 
 }: BookingDashboardProps) {
-  const [selectedDate] = useState(new Date('2024-10-20'))
+  const [bookings, setBookings] = useState<any[]>([])
+  const [recentCalls, setRecentCalls] = useState<any[]>([])
+  const [pastWeekData, setPastWeekData] = useState<any[]>([])
+  const { session } = useSessionContext()
+  const userId = session?.user?.id
 
-  const getSentimentEmoji = (sentiment: string | number) => {
-    if (typeof sentiment === 'string') {
-      return sentiment === 'Positive' ? '😊' : sentiment === 'Neutral' ? '😐' : '🙁'
+  useEffect(() => {
+    if (!userId) return
+
+    const fetchData = async () => {
+      // Fetch recent calls
+      const { data: callsData } = await supabase
+        .from('call_records')
+        .select('*')
+        .eq('user_id', userId)
+        .order('start_time', { ascending: false })
+        .limit(5)
+
+      if (callsData) {
+        setRecentCalls(callsData)
+      }
+
+      // Fetch today's bookings
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      
+      const { data: bookingsData } = await supabase
+        .from('bookings')
+        .select('*')
+        .eq('user_id', userId)
+        .gte('booking_time', today.toISOString())
+        .lt('booking_time', new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString())
+        .order('booking_time')
+
+      if (bookingsData) {
+        setBookings(bookingsData)
+      }
+
+      // Fetch past week data
+      const pastWeekStats = []
+      for (let i = 6; i >= 0; i--) {
+        const date = subDays(new Date(), i)
+        const startOfDay = new Date(date.setHours(0, 0, 0, 0))
+        const endOfDay = new Date(date.setHours(23, 59, 59, 999))
+
+        const { data: dayBookings } = await supabase
+          .from('bookings')
+          .select('*')
+          .eq('user_id', userId)
+          .gte('booking_time', startOfDay.toISOString())
+          .lt('booking_time', endOfDay.toISOString())
+
+        if (dayBookings) {
+          const callBookings = dayBookings.filter(b => b.is_call_booking).length
+          const nonCallBookings = dayBookings.length - callBookings
+          
+          pastWeekStats.push({
+            date: format(startOfDay, 'yyyy-MM-dd'),
+            callBookings,
+            nonCallBookings,
+            totalBookings: dayBookings.length
+          })
+        }
+      }
+      setPastWeekData(pastWeekStats)
     }
+
+    fetchData()
+  }, [userId])
+
+  const getSentimentEmoji = (sentiment: number) => {
     return sentiment >= 66 ? '😊' : sentiment >= 33 ? '😐' : '🙁'
   }
 
-  const getSentimentColor = (sentiment: string | number) => {
-    if (typeof sentiment === 'string') {
-      return sentiment === 'Positive' ? 'text-green-600' : sentiment === 'Neutral' ? 'text-orange-500' : 'text-red-600'
-    }
+  const getSentimentColor = (sentiment: number) => {
     return sentiment >= 66 ? 'text-green-600' : sentiment >= 33 ? 'text-orange-500' : 'text-red-600'
   }
-
-  const pastWeekData = Array.from({ length: 7 }, (_, i) => {
-    const date = new Date(selectedDate)
-    date.setDate(date.getDate() - i)
-    const totalBookings = Math.floor(Math.random() * 30) + 10
-    const callBookingsPercentage = Math.random() * 0.3 + 0.6
-    const callBookings = Math.round(totalBookings * callBookingsPercentage)
-    const nonCallBookings = totalBookings - callBookings
-    return {
-      date: date.toISOString().split('T')[0],
-      totalBookings,
-      callBookings,
-      nonCallBookings,
-    }
-  }).reverse()
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
@@ -72,11 +118,13 @@ export function BookingDashboard({
                   <TableCell className="text-center">{call.phone}</TableCell>
                   <TableCell className="text-center">{call.reason}</TableCell>
                   <TableCell className="text-center">{call.duration}</TableCell>
-                  <TableCell className="text-center">{new Date(call.startTime).toLocaleTimeString()}</TableCell>
+                  <TableCell className="text-center">
+                    {format(new Date(call.start_time), 'HH:mm')}
+                  </TableCell>
                   <TableCell className="text-center">
                     <span className={`flex items-center justify-center ${getSentimentColor(call.sentiment)}`}>
                       {getSentimentEmoji(call.sentiment)}
-                      <span className="ml-1">{call.sentiment}</span>
+                      <span className="ml-1">{call.sentiment}%</span>
                     </span>
                   </TableCell>
                 </TableRow>
@@ -97,10 +145,7 @@ export function BookingDashboard({
                   <BarChart data={pastWeekData} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
                     <XAxis 
                       dataKey="date" 
-                      tickFormatter={(value) => {
-                        const date = new Date(value);
-                        return `${date.getMonth() + 1}/${date.getDate()}`;
-                      }}
+                      tickFormatter={(value) => format(new Date(value), 'MM/dd')}
                       dy={10}
                       tick={{ fontSize: 12 }}
                     />
@@ -111,7 +156,7 @@ export function BookingDashboard({
                           const total = Number(payload[0].value) + Number(payload[1].value)
                           return (
                             <div className="bg-white p-2 border border-gray-300 rounded shadow text-center">
-                              <p className="text-sm text-purple-800">{`Date: ${label}`}</p>
+                              <p className="text-sm text-purple-800">{`Date: ${format(new Date(label), 'MM/dd/yyyy')}`}</p>
                               <p className="text-sm text-blue-600">{`Call Bookings: ${payload[0].value}`}</p>
                               <p className="text-sm text-red-600">{`Non-Call Bookings: ${payload[1].value}`}</p>
                               <p className="text-sm text-green-600">{`Total Bookings: ${total}`}</p>
@@ -145,27 +190,27 @@ export function BookingDashboard({
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
-              {bookings
-                .filter(booking => new Date(booking.date).toDateString() === selectedDate.toDateString())
-                .map(booking => (
-                  <li key={booking.id} className="flex justify-between items-center">
-                    <div>
-                      <span className="text-black">{booking.time} - {booking.name}</span>
-                      <span className="ml-2 text-sm text-black">({booking.service})</span>
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="bg-purple-100 text-black hover:bg-purple-200"
-                      onClick={() => {
-                        onBookingSelect(booking)
-                        onTranscriptOpen(true)
-                      }}
-                    >
-                      View Details
-                    </Button>
-                  </li>
-                ))}
+              {bookings.map(booking => (
+                <li key={booking.id} className="flex justify-between items-center">
+                  <div>
+                    <span className="text-black">
+                      {format(new Date(booking.booking_time), 'HH:mm')} - {booking.customer_name}
+                    </span>
+                    <span className="ml-2 text-sm text-black">({booking.service})</span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-purple-100 text-black hover:bg-purple-200"
+                    onClick={() => {
+                      onBookingSelect(booking)
+                      onTranscriptOpen(true)
+                    }}
+                  >
+                    View Details
+                  </Button>
+                </li>
+              ))}
             </ul>
           </CardContent>
         </Card>

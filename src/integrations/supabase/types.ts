@@ -47,6 +47,111 @@ export type Database = {
           },
         ]
       }
+      bookings: {
+        Row: {
+          booking_time: string
+          created_at: string
+          customer_name: string
+          details: string | null
+          id: string
+          is_call_booking: boolean | null
+          sentiment: number | null
+          service: string
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          booking_time: string
+          created_at?: string
+          customer_name: string
+          details?: string | null
+          id?: string
+          is_call_booking?: boolean | null
+          sentiment?: number | null
+          service: string
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          booking_time?: string
+          created_at?: string
+          customer_name?: string
+          details?: string | null
+          id?: string
+          is_call_booking?: boolean | null
+          sentiment?: number | null
+          service?: string
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_user"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      call_records: {
+        Row: {
+          created_at: string
+          duration: string
+          id: string
+          phone: string
+          reason: string
+          sentiment: number | null
+          start_time: string
+          transcript: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration: string
+          id?: string
+          phone: string
+          reason: string
+          sentiment?: number | null
+          start_time?: string
+          transcript?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duration?: string
+          id?: string
+          phone?: string
+          reason?: string
+          sentiment?: number | null
+          start_time?: string
+          transcript?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "call_records_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_user"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_submissions: {
         Row: {
           created_at: string
