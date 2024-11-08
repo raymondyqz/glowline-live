@@ -9,7 +9,6 @@ import { DashboardOverview } from './DashboardOverview'
 import { BookingDashboard } from './BookingDashboard'
 import { CallTranscript } from './CallTranscript'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { inputData, transcripts } from '@/lib/dashboardData'
 import { SettingsDialog } from './SettingsDialog'
 
 export function DashboardLayout() {
@@ -75,8 +74,6 @@ export function DashboardLayout() {
         {activePage === 'dashboard' && <DashboardOverview onPageChange={setActivePage} />}
         {activePage === 'bookings' && (
           <BookingDashboard
-            bookings={inputData.bookings}
-            recentCalls={inputData.recentCalls}
             onBookingSelect={setSelectedBooking}
             onTranscriptOpen={setIsTranscriptOpen}
           />
@@ -90,9 +87,9 @@ export function DashboardLayout() {
       <Dialog open={isTranscriptOpen} onOpenChange={setIsTranscriptOpen}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle className="text-lg text-purple-800">Call Transcript - {selectedBooking?.name}</DialogTitle>
+            <DialogTitle className="text-lg text-purple-800">Call Transcript - {selectedBooking?.customer_name}</DialogTitle>
           </DialogHeader>
-          <CallTranscript booking={selectedBooking} transcript={transcripts[selectedBooking?.id]} />
+          <CallTranscript booking={selectedBooking} transcript={selectedBooking?.transcript} />
         </DialogContent>
       </Dialog>
     </div>
