@@ -6,11 +6,10 @@ import { CallTranscript } from "./CallTranscript"
 
 interface RecentCallsTableProps {
   recentCalls: any[];
-  todaysBookings: any[];
 }
 
-export function RecentCallsTable({ recentCalls, todaysBookings }: RecentCallsTableProps) {
-  const [selectedItem, setSelectedItem] = useState<any>(null)
+export function RecentCallsTable({ recentCalls }: RecentCallsTableProps) {
+  const [selectedCall, setSelectedCall] = useState<any>(null)
   const [isTranscriptOpen, setIsTranscriptOpen] = useState(false)
 
   const getSentimentEmoji = (sentiment: number) => {
@@ -21,65 +20,41 @@ export function RecentCallsTable({ recentCalls, todaysBookings }: RecentCallsTab
     return sentiment >= 66 ? 'text-green-600' : sentiment >= 33 ? 'text-orange-500' : 'text-red-600'
   }
 
-  const handleRowClick = (item: any) => {
-    setSelectedItem(item)
+  const handleRowClick = (call: any) => {
+    setSelectedCall(call)
     setIsTranscriptOpen(true)
   }
-
-  // Combine and sort calls and bookings
-  const combinedItems = [
-    ...recentCalls.map(call => ({
-      ...call,
-      type: 'call',
-      displayTime: format(new Date(call.start_time), 'HH:mm'),
-      displayName: call.phone
-    })),
-    ...todaysBookings.map(booking => ({
-      ...booking,
-      type: 'booking',
-      displayTime: format(new Date(booking.booking_time), 'HH:mm'),
-      displayName: booking.customer_name
-    }))
-  ].sort((a, b) => {
-    const timeA = a.type === 'call' ? new Date(a.start_time) : new Date(a.booking_time)
-    const timeB = b.type === 'call' ? new Date(b.start_time) : new Date(b.booking_time)
-    return timeB.getTime() - timeA.getTime()
-  })
 
   return (
     <>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="text-center">Time</TableHead>
-            <TableHead className="text-center">Type</TableHead>
-            <TableHead className="text-center">Name/Phone</TableHead>
-            <TableHead className="text-center">Details</TableHead>
+            <TableHead className="text-center">Phone</TableHead>
+            <TableHead className="text-center">Reason</TableHead>
+            <TableHead className="text-center">Duration</TableHead>
+            <TableHead className="text-center">Start Time</TableHead>
             <TableHead className="text-center">Sentiment</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {combinedItems.map((item) => (
+          {recentCalls.map((call) => (
             <TableRow 
-              key={item.id}
-              onClick={() => handleRowClick(item)}
+              key={call.id}
+              onClick={() => handleRowClick(call)}
               className="cursor-pointer hover:bg-purple-50"
             >
-              <TableCell className="text-center">{item.displayTime}</TableCell>
+              <TableCell className="text-center">{call.phone}</TableCell>
+              <TableCell className="text-center">{call.reason}</TableCell>
+              <TableCell className="text-center">{call.duration}</TableCell>
               <TableCell className="text-center">
-                {item.type === 'call' ? 'Call' : 'Booking'}
-              </TableCell>
-              <TableCell className="text-center">{item.displayName}</TableCell>
-              <TableCell className="text-center">
-                {item.type === 'call' ? item.reason : item.service}
+                {format(new Date(call.start_time), 'HH:mm')}
               </TableCell>
               <TableCell className="text-center">
-                {item.sentiment && (
-                  <span className={`flex items-center justify-center ${getSentimentColor(item.sentiment)}`}>
-                    {getSentimentEmoji(item.sentiment)}
-                    <span className="ml-1">{item.sentiment}%</span>
-                  </span>
-                )}
+                <span className={`flex items-center justify-center ${getSentimentColor(call.sentiment)}`}>
+                  {getSentimentEmoji(call.sentiment)}
+                  <span className="ml-1">{call.sentiment}%</span>
+                </span>
               </TableCell>
             </TableRow>
           ))}
@@ -90,17 +65,17 @@ export function RecentCallsTable({ recentCalls, todaysBookings }: RecentCallsTab
         <DialogContent className="max-w-3xl">
           <DialogHeader>
             <DialogTitle className="text-lg text-purple-800">
-              {selectedItem?.type === 'call' ? 'Call Transcript' : 'Booking Details'} - {selectedItem?.displayName}
+              Call Transcript - {selectedCall?.phone}
             </DialogTitle>
           </DialogHeader>
           <CallTranscript 
             booking={{
-              service: selectedItem?.type === 'call' ? selectedItem?.reason : selectedItem?.service,
-              details: selectedItem?.type === 'call' ? `Call Duration: ${selectedItem?.duration}` : selectedItem?.details,
-              time: selectedItem?.type === 'call' ? selectedItem?.start_time : selectedItem?.booking_time,
-              sentiment: selectedItem?.sentiment
+              service: selectedCall?.reason,
+              details: `Call Duration: ${selectedCall?.duration}`,
+              time: selectedCall?.start_time,
+              sentiment: selectedCall?.sentiment
             }} 
-            transcript={selectedItem?.transcript} 
+            transcript={selectedCall?.transcript} 
           />
         </DialogContent>
       </Dialog>
