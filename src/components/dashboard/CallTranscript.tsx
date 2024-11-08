@@ -26,8 +26,14 @@ export function CallTranscript({ booking, transcript }: CallTranscriptProps) {
   const formatTranscript = (transcript: string) => {
     if (!transcript) return null;
     
-    return transcript.split('\n').map((line, index) => {
-      const isAgent = line.startsWith('Agent:');
+    // Split by actual newlines or \n in the string
+    const lines = transcript.split(/\\n|\n/);
+    
+    return lines.map((line, index) => {
+      const isAgent = line.toLowerCase().startsWith('agent:');
+      const [role, ...messageParts] = line.split(':');
+      const message = messageParts.join(':').trim();
+
       return (
         <div
           key={index}
@@ -38,10 +44,10 @@ export function CallTranscript({ booking, transcript }: CallTranscriptProps) {
           }`}
         >
           <span className="font-semibold text-purple-800">
-            {line.split(':')[0]}:
+            {role}:
           </span>
-          <span className="text-gray-700">
-            {line.split(':')[1]}
+          <span className="text-gray-700 ml-2">
+            {message}
           </span>
         </div>
       );
