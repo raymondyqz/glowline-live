@@ -22,6 +22,31 @@ export function CallTranscript({ booking, transcript }: CallTranscriptProps) {
     'Follow up with a satisfaction survey',
   ]
 
+  const formatTranscript = (transcript: string) => {
+    if (!transcript) return null;
+    
+    return transcript.split('\n').map((line, index) => {
+      const isAgent = line.startsWith('Agent:');
+      return (
+        <div
+          key={index}
+          className={`p-2 mb-2 rounded-lg ${
+            isAgent 
+              ? 'bg-purple-100 ml-8' 
+              : 'bg-gray-100 mr-8'
+          }`}
+        >
+          <span className="font-semibold text-purple-800">
+            {line.split(':')[0]}:
+          </span>
+          <span className="text-gray-700">
+            {line.split(':')[1]}
+          </span>
+        </div>
+      );
+    });
+  };
+
   return (
     <div className="space-y-4 text-center">
       <div className="flex justify-between items-center mb-4">
@@ -38,8 +63,8 @@ export function CallTranscript({ booking, transcript }: CallTranscriptProps) {
           </span>
         </div>
       </div>
-      <div className="bg-gray-100 p-4 rounded-md h-48 overflow-y-auto text-left">
-        <pre className="whitespace-pre-wrap text-black text-sm">{transcript}</pre>
+      <div className="bg-white p-4 rounded-md max-h-96 overflow-y-auto text-left shadow-inner">
+        {formatTranscript(transcript)}
       </div>
       <Card className="bg-white/50 backdrop-blur-sm">
         <CardHeader>
