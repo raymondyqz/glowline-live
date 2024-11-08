@@ -6,6 +6,8 @@ import { useEffect, useState } from "react"
 import { supabase } from "@/integrations/supabase/client"
 import { useSessionContext } from "@supabase/auth-helpers-react"
 import { startOfDay, endOfDay } from 'date-fns'
+import { DashboardStats } from './DashboardStats'
+import { DashboardCharts } from './DashboardCharts'
 
 interface DashboardOverviewProps {
   onPageChange: (page: string) => void;
@@ -18,7 +20,6 @@ export function DashboardOverview({ onPageChange }: DashboardOverviewProps) {
   const [callCategories, setCallCategories] = useState<any[]>([])
   const { session } = useSessionContext()
   const userId = session?.user?.id
-  const COLORS = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
 
   useEffect(() => {
     if (!userId) return
@@ -35,17 +36,17 @@ export function DashboardOverview({ onPageChange }: DashboardOverviewProps) {
         .gte('booking_time', today.toISOString())
         .lt('booking_time', todayEnd.toISOString())
 
-      // Fetch today's calls count
-      const { count: callsCount } = await supabase
+      // Fetch today's calls
+      const { data: recentCalls } = await supabase
         .from('call_records')
-        .select('*', { count: 'exact', head: true })
+        .select('*')
         .eq('user_id', userId)
-        .gte('start_time', today.toISOString())
-        .lt('start_time', todayEnd.toISOString())
+        .order('start_time', { ascending: false })
+        .limit(5)
 
       setTodayStats({
         bookings: bookingsCount || 0,
-        calls: callsCount || 0
+        calls: recentCalls?.length || 0
       })
 
       // Fetch and process appointment types
