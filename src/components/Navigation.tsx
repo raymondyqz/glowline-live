@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, Sparkle, X } from "lucide-react";
+import { Menu, Sparkle, X, LayoutDashboard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -66,6 +66,17 @@ const Navigation = () => {
             </Link>
             {session ? (
               <>
+                <Link
+                  to="/dashboard"
+                  className={`${
+                    isActive("/dashboard")
+                      ? "text-purple-800"
+                      : "text-gray-500 hover:text-purple-700"
+                  } px-3 py-2 text-sm font-medium transition-colors flex items-center gap-1`}
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                </Link>
                 <Link
                   to="/settings"
                   className={`${
@@ -133,17 +144,31 @@ const Navigation = () => {
               About
             </Link>
             {session && (
-              <Link
-                to="/settings"
-                className={`${
-                  isActive("/settings")
-                    ? "text-purple-800"
-                    : "text-gray-500 hover:text-purple-700"
-                } block px-3 py-2 text-base font-medium`}
-                onClick={() => setIsOpen(false)}
-              >
-                Settings
-              </Link>
+              <>
+                <Link
+                  to="/dashboard"
+                  className={`${
+                    isActive("/dashboard")
+                      ? "text-purple-800"
+                      : "text-gray-500 hover:text-purple-700"
+                  } block px-3 py-2 text-base font-medium flex items-center gap-1`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                </Link>
+                <Link
+                  to="/settings"
+                  className={`${
+                    isActive("/settings")
+                      ? "text-purple-800"
+                      : "text-gray-500 hover:text-purple-700"
+                  } block px-3 py-2 text-base font-medium`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  Settings
+                </Link>
+              </>
             )}
             {session ? (
               <Button
