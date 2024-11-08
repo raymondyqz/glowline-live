@@ -8,14 +8,17 @@ import { useSessionContext } from "@supabase/auth-helpers-react"
 import { useEffect } from "react"
 import { DashboardOverview } from './DashboardOverview'
 import { BookingDashboard } from './BookingDashboard'
-import { SettingsPage } from './SettingsPage'
 import { CallTranscript } from './CallTranscript'
 import { inputData, transcripts } from '@/lib/dashboardData'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
 
 export function DashboardLayout() {
   const [activePage, setActivePage] = useState('dashboard')
   const [selectedBooking, setSelectedBooking] = useState<any>(null)
   const [isTranscriptOpen, setIsTranscriptOpen] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const { session } = useSessionContext()
   const navigate = useNavigate()
 
@@ -47,10 +50,10 @@ export function DashboardLayout() {
           <CalendarIcon className="h-5 w-5 text-gray-600" />
         </Button>
         <Button
-          variant={activePage === 'settings' ? "secondary" : "ghost"}
+          variant="ghost"
           size="icon"
           className="mt-auto"
-          onClick={() => setActivePage('settings')}
+          onClick={() => setIsSettingsOpen(true)}
         >
           <Settings className="h-5 w-5 text-gray-600" />
         </Button>
@@ -80,9 +83,58 @@ export function DashboardLayout() {
             onTranscriptOpen={setIsTranscriptOpen}
           />
         )}
-        {activePage === 'settings' && <SettingsPage />}
       </main>
 
+      {/* Settings Dialog */}
+      <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-purple-800">Settings</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-6">
+            <Card className="bg-white/50 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-lg text-purple-800">System Settings</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="dark-mode" className="text-black">Dark Mode</Label>
+                  <Switch id="dark-mode" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="notifications" className="text-black">Enable Notifications</Label>
+                  <Switch id="notifications" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="auto-refresh" className="text-black">Auto-refresh Dashboard</Label>
+                  <Switch id="auto-refresh" />
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/50 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-lg text-purple-800">AI Agent Settings</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="ai-suggestions" className="text-black">AI Suggestions</Label>
+                  <Switch id="ai-suggestions" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="sentiment-analysis" className="text-black">Sentiment Analysis</Label>
+                  <Switch id="sentiment-analysis" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="auto-scheduling" className="text-black">Auto Scheduling</Label>
+                  <Switch id="auto-scheduling" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Transcript Dialog */}
       <Dialog open={isTranscriptOpen} onOpenChange={setIsTranscriptOpen}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>

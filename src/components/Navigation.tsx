@@ -77,16 +77,6 @@ const Navigation = () => {
                   <LayoutDashboard className="h-4 w-4" />
                   Dashboard
                 </Link>
-                <Link
-                  to="/settings"
-                  className={`${
-                    isActive("/settings")
-                      ? "text-purple-800"
-                      : "text-gray-500 hover:text-purple-700"
-                  } px-3 py-2 text-sm font-medium transition-colors`}
-                >
-                  Settings
-                </Link>
                 <Button
                   variant="outline"
                   onClick={handleLogout}
@@ -144,31 +134,18 @@ const Navigation = () => {
               About
             </Link>
             {session && (
-              <>
-                <Link
-                  to="/dashboard"
-                  className={`${
-                    isActive("/dashboard")
-                      ? "text-purple-800"
-                      : "text-gray-500 hover:text-purple-700"
-                  } block px-3 py-2 text-base font-medium flex items-center gap-1`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  <LayoutDashboard className="h-4 w-4" />
-                  Dashboard
-                </Link>
-                <Link
-                  to="/settings"
-                  className={`${
-                    isActive("/settings")
-                      ? "text-purple-800"
-                      : "text-gray-500 hover:text-purple-700"
-                  } block px-3 py-2 text-base font-medium`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Settings
-                </Link>
-              </>
+              <Link
+                to="/dashboard"
+                className={`${
+                  isActive("/dashboard")
+                    ? "text-purple-800"
+                    : "text-gray-500 hover:text-purple-700"
+                } block px-3 py-2 text-base font-medium flex items-center gap-1`}
+                onClick={() => setIsOpen(false)}
+              >
+                <LayoutDashboard className="h-4 w-4" />
+                Dashboard
+              </Link>
             )}
             {session ? (
               <Button
