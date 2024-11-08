@@ -1,13 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { PieChart as PieChartComponent, Pie, Cell, ResponsiveContainer, Legend } from 'recharts'
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { useEffect, useState } from "react"
 import { supabase } from "@/integrations/supabase/client"
 import { useSessionContext } from "@supabase/auth-helpers-react"
 import { startOfDay, endOfDay } from 'date-fns'
-import { DashboardStats } from './DashboardStats'
-import { DashboardCharts } from './DashboardCharts'
+import { ChartCard } from './ChartCard'
+import { TodayActivity } from './TodayActivity'
 
 interface DashboardOverviewProps {
   onPageChange: (page: string) => void;
@@ -125,89 +121,23 @@ export function DashboardOverview({ onPageChange }: DashboardOverviewProps) {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
-      <Card className="bg-white/50 backdrop-blur-sm">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-purple-800">Today's Activity</CardTitle>
-        </CardHeader>
-        <CardContent className="flex items-center justify-center h-[150px]">
-          <div className="flex space-x-12">
-            <div className="text-center">
-              <p className="text-sm font-medium text-gray-500 mb-1">Bookings</p>
-              <Button
-                variant="ghost"
-                className="text-4xl font-bold text-black p-0 hover:bg-transparent"
-                onClick={() => onPageChange('bookings')}
-              >
-                {todayStats.bookings}
-              </Button>
-            </div>
-            <div className="text-center">
-              <p className="text-sm font-medium text-gray-500 mb-1">Inbound Calls</p>
-              <p className="text-4xl font-bold text-black">{todayStats.calls}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <TodayActivity 
+        bookings={todayStats.bookings} 
+        calls={todayStats.calls} 
+        onPageChange={onPageChange} 
+      />
       <ChartCard
         title="Appointment Types"
         data={appointmentTypes}
-        colors={COLORS}
       />
       <ChartCard
         title="Call Lengths"
         data={callLengths}
-        colors={COLORS}
       />
       <ChartCard
         title="Call Categories"
         data={callCategories}
-        colors={COLORS}
       />
     </div>
-  )
-}
-
-interface ChartCardProps {
-  title: string;
-  data: Array<{ name: string; value: number }>;
-  colors: string[];
-}
-
-function ChartCard({ title, data, colors }: ChartCardProps) {
-  return (
-    <Card className="bg-white/50 backdrop-blur-sm">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium text-purple-800">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="pt-0 pr-2">
-        <ChartContainer config={{}} className="h-[180px] mt-4">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChartComponent>
-              <Pie
-                data={data}
-                cx="40%"
-                cy="50%"
-                innerRadius={40}
-                outerRadius={60}
-                fill="#8884d8"
-                dataKey="value"
-                label={false}
-              >
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                ))}
-              </Pie>
-              <Legend 
-                layout="vertical" 
-                align="right" 
-                verticalAlign="middle" 
-                wrapperStyle={{ right: 10, lineHeight: '24px', width: '45%' }} 
-              />
-              <ChartTooltip content={<ChartTooltipContent indicator="line" nameKey="name" valueKey="value" />} />
-            </PieChartComponent>
-          </ResponsiveContainer>
-        </ChartContainer>
-      </CardContent>
-    </Card>
   )
 }
