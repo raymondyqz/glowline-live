@@ -107,36 +107,48 @@ export type Database = {
       call_records: {
         Row: {
           created_at: string
+          customer_name: string | null
+          details: string | null
           duration: string
           id: string
           phone: string
           reason: string
           sentiment: number | null
+          service: string | null
           start_time: string
+          through_glow: boolean | null
           transcript: string | null
           updated_at: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
+          customer_name?: string | null
+          details?: string | null
           duration: string
           id?: string
           phone: string
           reason: string
           sentiment?: number | null
+          service?: string | null
           start_time?: string
+          through_glow?: boolean | null
           transcript?: string | null
           updated_at?: string | null
           user_id: string
         }
         Update: {
           created_at?: string
+          customer_name?: string | null
+          details?: string | null
           duration?: string
           id?: string
           phone?: string
           reason?: string
           sentiment?: number | null
+          service?: string | null
           start_time?: string
+          through_glow?: boolean | null
           transcript?: string | null
           updated_at?: string | null
           user_id?: string
