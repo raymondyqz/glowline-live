@@ -70,28 +70,28 @@ export function BookingStatistics({ pastWeekData }: BookingStatisticsProps) {
                       return (
                         <div className="bg-white p-2 border border-gray-300 rounded shadow text-center">
                           <p className="text-sm text-purple-800">{`Date: ${format(new Date(label), 'MM/dd/yyyy')}`}</p>
-                          <p className="text-sm text-blue-600">{`Call Bookings: ${payload[0].value}`}</p>
-                          <p className="text-sm text-red-600">{`Non-Call Bookings: ${payload[1].value}`}</p>
-                          <p className="text-sm text-green-600">{`Total Bookings: ${total}`}</p>
+                          <p className="text-sm text-blue-600">{`Total Calls: ${payload[0].value}`}</p>
+                          <p className="text-sm text-green-600">{`Through Glow: ${payload[1].value}`}</p>
+                          <p className="text-sm text-gray-600">{`Total: ${total}`}</p>
                         </div>
                       )
                     }
                     return null
                   }}
                 />
-                <Bar dataKey="callBookings" stackId="a" fill="#36A2EB" name="Call Bookings" />
-                <Bar dataKey="nonCallBookings" stackId="a" fill="#FF6384" name="Non-Call Bookings" radius={[5, 5, 0, 0]} />
+                <Bar dataKey="totalCalls" stackId="a" fill="#36A2EB" name="Total Calls" />
+                <Bar dataKey="throughGlow" stackId="a" fill="#4BC0C0" name="Through Glow" radius={[5, 5, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </ChartContainer>
           <div className="mt-2 text-sm text-black flex items-center justify-center space-x-4">
             <div className="flex items-center">
               <span className="w-4 h-4 bg-[#36A2EB] mr-2 rounded"></span>
-              <span>Call Bookings</span>
+              <span>Total Calls</span>
             </div>
             <div className="flex items-center">
-              <span className="w-4 h-4 bg-[#FF6384] mr-2 rounded"></span>
-              <span>Non-Call Bookings</span>
+              <span className="w-4 h-4 bg-[#4BC0C0] mr-2 rounded"></span>
+              <span>Through Glow</span>
             </div>
           </div>
         </div>
