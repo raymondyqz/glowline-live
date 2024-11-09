@@ -18,15 +18,17 @@ export function BookingStatistics({ pastWeekData }: BookingStatisticsProps) {
     queryKey: ['callStats', userId],
     queryFn: async () => {
       const { count: totalCalls } = await supabase
-        .from('call_records')
+        .from('call_log')
         .select('*', { count: 'exact', head: true })
         .eq('user_id', userId)
+        .is('is_booking', false)
 
       const { count: glowCalls } = await supabase
-        .from('call_records')
+        .from('call_log')
         .select('*', { count: 'exact', head: true })
         .eq('user_id', userId)
         .eq('through_glow', true)
+        .is('is_booking', false)
 
       return {
         totalCalls: totalCalls || 0,
