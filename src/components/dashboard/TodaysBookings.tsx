@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useState } from "react"
 import { CallTranscript } from "./CallTranscript"
@@ -36,7 +36,7 @@ export function TodaysBookings({ bookings, onBookingSelect, onTranscriptOpen }: 
               >
                 <div>
                   <span className="text-black">
-                    {format(new Date(booking.booking_time), 'HH:mm')} - {booking.customer_name}
+                    {format(parseISO(booking.start_time), 'HH:mm')} - {booking.customer_name}
                   </span>
                   <span className="ml-2 text-sm text-black">({booking.service})</span>
                 </div>
