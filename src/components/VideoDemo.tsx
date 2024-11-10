@@ -12,10 +12,30 @@ const VideoDemo = () => {
   useEffect(() => {
     const getVideoUrl = async () => {
       try {
+        // First, list files in the videos bucket to get the actual filename
+        const { data: files, error: listError } = await supabase
+          .storage
+          .from('videos')
+          .list();
+
+        if (listError) {
+          console.error('Error listing files:', listError);
+          throw listError;
+        }
+
+        if (!files || files.length === 0) {
+          throw new Error('No video files found in the bucket');
+        }
+
+        // Get the first video file from the bucket
+        const videoFile = files[0];
+        console.log('Found video file:', videoFile.name);
+
+        // Create a signed URL for the file
         const { data: urlData, error: urlError } = await supabase
           .storage
           .from('videos')
-          .createSignedUrl('video-demo.mp4', 3600);
+          .createSignedUrl(videoFile.name, 3600);
 
         if (urlError) {
           console.error('Error creating signed URL:', urlError);
@@ -26,6 +46,7 @@ const VideoDemo = () => {
           throw new Error('No signed URL generated');
         }
 
+        console.log('Generated signed URL:', urlData.signedUrl);
         setVideoUrl(urlData.signedUrl);
       } catch (error) {
         console.error('Error loading video:', error);
