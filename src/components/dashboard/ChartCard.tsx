@@ -16,7 +16,7 @@ export function ChartCard({ title, data }: ChartCardProps) {
         <CardTitle className="text-sm font-medium text-purple-800">{title}</CardTitle>
       </CardHeader>
       <CardContent className="pt-0 pr-2">
-        <ChartContainer config={{}} className="h-[180px] mt-4">
+        <ChartContainer config={{}} className="h-[220px] mt-4">
           <ResponsiveContainer width="100%" height="100%">
             <PieChartComponent>
               <Pie
