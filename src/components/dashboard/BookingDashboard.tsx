@@ -23,12 +23,11 @@ export function BookingDashboard({ onBookingSelect, onTranscriptOpen }: BookingD
     if (!userId) return
 
     const fetchData = async () => {
-      // Fetch recent calls from call_log
+      // Fetch recent calls
       const { data: callsData } = await supabase
-        .from('call_log')
+        .from('call_records')
         .select('*')
         .eq('user_id', userId)
-        .is('is_booking', false)
         .order('start_time', { ascending: false })
         .limit(5)
 
@@ -36,46 +35,45 @@ export function BookingDashboard({ onBookingSelect, onTranscriptOpen }: BookingD
         setRecentCalls(callsData)
       }
 
-      // Fetch today's bookings from call_log
+      // Fetch today's bookings
       const today = new Date()
       today.setHours(0, 0, 0, 0)
       
       const { data: bookingsData } = await supabase
-        .from('call_log')
+        .from('bookings')
         .select('*')
         .eq('user_id', userId)
-        .eq('is_booking', true)
-        .gte('start_time', today.toISOString())
-        .lt('start_time', new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString())
-        .order('start_time')
+        .gte('booking_time', today.toISOString())
+        .lt('booking_time', new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString())
+        .order('booking_time')
 
       if (bookingsData) {
         setBookings(bookingsData)
       }
 
-      // Fetch past week data from call_log
+      // Fetch past week data
       const pastWeekStats = []
       for (let i = 6; i >= 0; i--) {
         const date = subDays(new Date(), i)
         const startOfDay = new Date(date.setHours(0, 0, 0, 0))
         const endOfDay = new Date(date.setHours(23, 59, 59, 999))
 
-        const { data: dayData } = await supabase
-          .from('call_log')
+        const { data: dayBookings } = await supabase
+          .from('bookings')
           .select('*')
           .eq('user_id', userId)
-          .gte('start_time', startOfDay.toISOString())
-          .lt('start_time', endOfDay.toISOString())
+          .gte('booking_time', startOfDay.toISOString())
+          .lt('booking_time', endOfDay.toISOString())
 
-        if (dayData) {
-          const callBookings = dayData.filter(b => b.through_glow).length
-          const nonCallBookings = dayData.length - callBookings
+        if (dayBookings) {
+          const callBookings = dayBookings.filter(b => b.is_call_booking).length
+          const nonCallBookings = dayBookings.length - callBookings
           
           pastWeekStats.push({
             date: format(startOfDay, 'yyyy-MM-dd'),
             callBookings,
             nonCallBookings,
-            totalBookings: dayData.length
+            totalBookings: dayBookings.length
           })
         }
       }
