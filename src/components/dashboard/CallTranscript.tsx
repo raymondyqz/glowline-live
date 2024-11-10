@@ -9,22 +9,14 @@ interface CallTranscriptProps {
 
 export function CallTranscript({ booking, transcript }: CallTranscriptProps) {
   if (!booking) {
-    return <div className="text-purple-700">No call record selected</div>
+    return <div className="text-purple-700">No booking selected</div>
   }
 
   const keyDatapoints = [
-    { label: 'Customer Name', value: booking.customer_name || '' },
-    { label: 'Phone', value: booking.phone || '' },
-    { label: 'Reason', value: booking.reason || '' },
-    { label: 'Service', value: booking.service || 'General Consultation' },
-    { label: 'Details', value: booking.details || 'General consultation and service discussion' },
-    { label: 'Start Time', value: booking.start_time ? format(parseISO(booking.start_time), 'PPpp') : '' },
-    { label: 'Duration', value: booking.duration || '' },
-    { label: 'Through Glow', value: booking.through_glow ? 'Yes' : 'No' },
-    { label: 'Created At', value: booking.created_at ? format(parseISO(booking.created_at), 'PPpp') : '' },
-    { label: 'Updated At', value: booking.updated_at ? format(parseISO(booking.updated_at), 'PPpp') : '' },
-    { label: 'ID', value: booking.id || '' },
-    { label: 'User ID', value: booking.user_id || '' },
+    { label: 'Customer', value: booking.customer_name || 'Not specified' },
+    { label: 'Service', value: booking.service },
+    { label: 'Details', value: booking.details },
+    { label: 'Time', value: booking.time ? format(parseISO(booking.time), 'PPpp') : 'Not specified' },
   ]
 
   const suggestions = [
