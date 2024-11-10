@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { format, parseISO } from "date-fns"
 
 interface CallTranscriptProps {
   booking: any;
@@ -12,9 +13,9 @@ export function CallTranscript({ booking, transcript }: CallTranscriptProps) {
   }
 
   const keyDatapoints = [
-    { label: 'Service Requested', value: booking.service },
+    { label: 'Service', value: booking.service },
     { label: 'Details', value: booking.details },
-    { label: 'Booking Time', value: booking.time },
+    { label: 'Time', value: booking.time ? format(parseISO(booking.time), 'PPpp') : 'Not specified' },
   ]
 
   const suggestions = [
