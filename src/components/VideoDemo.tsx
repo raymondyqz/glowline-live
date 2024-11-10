@@ -12,46 +12,27 @@ const VideoDemo = () => {
   useEffect(() => {
     const getVideoUrl = async () => {
       try {
-        // First check if the file exists
-        const { data: fileExists, error: existsError } = await supabase
+        const { data, error } = await supabase
           .storage
           .from('videos')
-          .list('', {
-            search: 'video-demo.mp4'
-          });
+          .createSignedUrl('video-demo.mp4', 3600); // 1 hour expiry
 
-        if (existsError) {
-          console.error('Error checking file existence:', existsError);
-          throw existsError;
+        if (error) {
+          console.error('Error creating signed URL:', error);
+          throw error;
         }
 
-        if (!fileExists || fileExists.length === 0) {
-          throw new Error('Video file not found in bucket');
-        }
-
-        // If file exists, create a signed URL
-        const { data: urlData, error: urlError } = await supabase
-          .storage
-          .from('videos')
-          .createSignedUrl('video-demo.mp4', 3600);
-
-        if (urlError) {
-          console.error('Error creating signed URL:', urlError);
-          throw urlError;
-        }
-
-        if (!urlData?.signedUrl) {
+        if (!data?.signedUrl) {
           throw new Error('No signed URL generated');
         }
 
-        console.log('Generated signed URL:', urlData.signedUrl);
-        setVideoUrl(urlData.signedUrl);
+        setVideoUrl(data.signedUrl);
       } catch (error) {
         console.error('Error loading video:', error);
         toast({
           variant: "destructive",
           title: "Error loading video",
-          description: "Please ensure video-demo.mp4 is uploaded to the videos bucket.",
+          description: "Please ensure video-demo.mp4 is accessible in the videos bucket.",
         });
       } finally {
         setLoading(false);
@@ -102,7 +83,7 @@ const VideoDemo = () => {
                 Your browser does not support the video element.
               </video>
             ) : (
-              <p className="text-red-500">Video file not found. Please ensure video-demo.mp4 is uploaded to the videos bucket.</p>
+              <p className="text-red-500">Video file not found. Please ensure video-demo.mp4 is accessible in the videos bucket.</p>
             )}
             <p className="mt-6 text-sm text-purple-600">
               Experience the simplicity and efficiency of Glowline's dashboard interface.
