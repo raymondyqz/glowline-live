@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { supabase } from "@/integrations/supabase/client"
 import { useSessionContext } from "@supabase/auth-helpers-react"
-import { startOfDay, endOfDay, subDays } from 'date-fns'
+import { subDays } from 'date-fns'
 import { ChartCard } from './ChartCard'
 import { BookingStatistics } from './BookingStatistics'
 
@@ -10,7 +10,6 @@ interface DashboardOverviewProps {
 }
 
 export function DashboardOverview({ onPageChange }: DashboardOverviewProps) {
-  const [appointmentTypes, setAppointmentTypes] = useState<any[]>([])
   const [callLengths, setCallLengths] = useState<any[]>([])
   const [callCategories, setCallCategories] = useState<any[]>([])
   const [pastWeekData, setPastWeekData] = useState<any[]>([])
@@ -25,12 +24,8 @@ export function DashboardOverview({ onPageChange }: DashboardOverviewProps) {
       const pastWeekData = []
       for (let i = 6; i >= 0; i--) {
         const date = subDays(new Date(), i)
-        
-        // Generate total calls first (between 10-25)
         const totalCalls = Math.floor(Math.random() * 16) + 10
-        
-        // Calculate Glow calls as 50-90% of total
-        const percentage = Math.random() * 0.4 + 0.5 // Random between 0.5 and 0.9
+        const percentage = Math.random() * 0.4 + 0.5
         const callBookings = Math.floor(totalCalls * percentage)
         const nonCallBookings = totalCalls - callBookings
 
@@ -41,26 +36,6 @@ export function DashboardOverview({ onPageChange }: DashboardOverviewProps) {
         })
       }
       setPastWeekData(pastWeekData)
-
-      // Fetch and process appointment types
-      const { data: bookingsData } = await supabase
-        .from('bookings')
-        .select('service')
-        .eq('user_id', userId)
-
-      if (bookingsData) {
-        const serviceCount = bookingsData.reduce((acc: any, curr) => {
-          acc[curr.service] = (acc[curr.service] || 0) + 1
-          return acc
-        }, {})
-
-        setAppointmentTypes(
-          Object.entries(serviceCount).map(([name, value]) => ({
-            name,
-            value
-          }))
-        )
-      }
 
       // Fetch and process call lengths
       const { data: callsData } = await supabase
@@ -117,20 +92,20 @@ export function DashboardOverview({ onPageChange }: DashboardOverviewProps) {
   }, [userId])
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
-      <BookingStatistics pastWeekData={pastWeekData} />
-      <ChartCard
-        title="Appointment Types"
-        data={appointmentTypes}
-      />
-      <ChartCard
-        title="Call Lengths"
-        data={callLengths}
-      />
-      <ChartCard
-        title="Call Categories"
-        data={callCategories}
-      />
+    <div className="grid gap-4 grid-cols-2">
+      <div className="h-full">
+        <BookingStatistics pastWeekData={pastWeekData} />
+      </div>
+      <div className="space-y-4">
+        <ChartCard
+          title="Call Lengths"
+          data={callLengths}
+        />
+        <ChartCard
+          title="Call Categories"
+          data={callCategories}
+        />
+      </div>
     </div>
   )
 }
