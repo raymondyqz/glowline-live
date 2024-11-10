@@ -13,7 +13,7 @@ export function CallTranscript({ booking, transcript }: CallTranscriptProps) {
   }
 
   const keyDatapoints = [
-    { label: 'Customer', value: booking.customer_name },
+    { label: 'Customer', value: 'Raymond Zhao' },
     { label: 'Service', value: booking.service },
     { label: 'Details', value: booking.details },
     { label: 'Time', value: booking.time ? format(parseISO(booking.time), 'PPpp') : '' },
