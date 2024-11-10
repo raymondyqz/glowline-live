@@ -12,30 +12,11 @@ const VideoDemo = () => {
   useEffect(() => {
     const getVideoUrl = async () => {
       try {
-        // List files in the videos bucket to get the actual filename
-        const { data: files, error: listError } = await supabase
-          .storage
-          .from('videos')
-          .list();
-
-        if (listError) {
-          console.error('Error listing files:', listError);
-          throw listError;
-        }
-
-        if (!files || files.length === 0) {
-          throw new Error('No video files found in the bucket');
-        }
-
-        // Get the first video file from the bucket
-        const videoFile = files[0];
-        console.log('Found video file:', videoFile.name);
-
-        // Create a signed URL for the file
+        // Create a signed URL directly for video-demo.mp4
         const { data: urlData, error: urlError } = await supabase
           .storage
           .from('videos')
-          .createSignedUrl(videoFile.name, 3600);
+          .createSignedUrl('video-demo.mp4', 3600);
 
         if (urlError) {
           console.error('Error creating signed URL:', urlError);
@@ -53,7 +34,7 @@ const VideoDemo = () => {
         toast({
           variant: "destructive",
           title: "Error loading video",
-          description: error instanceof Error ? error.message : "Please try refreshing the page.",
+          description: "Please ensure video-demo.mp4 is uploaded to the videos bucket.",
         });
       } finally {
         setLoading(false);
@@ -104,7 +85,7 @@ const VideoDemo = () => {
                 Your browser does not support the video element.
               </video>
             ) : (
-              <p className="text-red-500">Video file not found</p>
+              <p className="text-red-500">Video file not found. Please ensure video-demo.mp4 is uploaded to the videos bucket.</p>
             )}
             <p className="mt-6 text-sm text-purple-600">
               Experience the simplicity and efficiency of Glowline's dashboard interface.
