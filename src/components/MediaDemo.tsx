@@ -100,7 +100,7 @@ const MediaDemo = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-purple-800 mb-4">
-            Experience Glowline
+            Experience the Glow
           </h2>
           <p className="text-purple-700 mb-8">
             See and hear how our AI receptionist handles real-world scenarios with natural,

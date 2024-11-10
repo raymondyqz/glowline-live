@@ -8,7 +8,7 @@ const Footer = () => {
           <div>
             <h3 className="text-2xl font-bold mb-4">Glowline</h3>
             <p className="text-purple-200">
-              Your 24/7 AI receptionist for beauty, hair, and veterinary businesses.
+              Your 24/7 AI receptionist for skin, hair and care businesses.
             </p>
           </div>
           
