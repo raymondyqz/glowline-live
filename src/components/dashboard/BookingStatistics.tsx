@@ -8,6 +8,11 @@ interface BookingStatisticsProps {
 }
 
 export function BookingStatistics({ pastWeekData }: BookingStatisticsProps) {
+  // Get today's data (last item in the array)
+  const todayData = pastWeekData[pastWeekData.length - 1]
+  const totalCallsToday = todayData ? todayData.callBookings + todayData.nonCallBookings : 0
+  const glowCallsToday = todayData ? todayData.callBookings : 0
+
   return (
     <Card className="bg-white/50 backdrop-blur-sm h-full">
       <CardHeader className="pb-2">
@@ -15,6 +20,16 @@ export function BookingStatistics({ pastWeekData }: BookingStatisticsProps) {
       </CardHeader>
       <CardContent>
         <div className="h-full">
+          <div className="mb-6 grid grid-cols-2 gap-4">
+            <div className="bg-white/80 p-4 rounded-lg shadow-sm">
+              <p className="text-sm text-gray-600 mb-1">Total Calls Today</p>
+              <p className="text-2xl font-semibold text-purple-800">{totalCallsToday}</p>
+            </div>
+            <div className="bg-white/80 p-4 rounded-lg shadow-sm">
+              <p className="text-sm text-gray-600 mb-1">Calls through Glow Today</p>
+              <p className="text-2xl font-semibold text-blue-600">{glowCallsToday}</p>
+            </div>
+          </div>
           <ChartContainer config={{}} className="h-[450px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={pastWeekData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
