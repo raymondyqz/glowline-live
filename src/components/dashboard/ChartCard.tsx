@@ -28,6 +28,9 @@ export function ChartCard({ title, data }: ChartCardProps) {
                 fill="#8884d8"
                 dataKey="value"
                 label={false}
+                animationBegin={0}
+                animationDuration={1000}
+                animationEasing="ease-out"
               >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
