@@ -20,12 +20,15 @@ export function BookingDashboard({ onBookingSelect, onTranscriptOpen }: BookingD
     const fetchData = async () => {
       const { data: callsData } = await supabase
         .from('call_records')
-        .select('*')
+        .select('*, customer_name')
         .eq('user_id', userId)
         .order('start_time', { ascending: false })
 
       if (callsData) {
-        setRecentCalls(callsData)
+        setRecentCalls(callsData.map(call => ({
+          ...call,
+          customer_name: call.customer_name || 'Unknown Customer'
+        })))
       }
     }
 
