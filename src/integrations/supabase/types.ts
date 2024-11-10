@@ -104,39 +104,116 @@ export type Database = {
           },
         ]
       }
-      call_records: {
+      call_log: {
         Row: {
           created_at: string
-          duration: string
+          customer_name: string
+          details: string | null
+          duration: string | null
           id: string
-          phone: string
-          reason: string
+          is_booking: boolean | null
+          phone: string | null
+          reason: string | null
           sentiment: number | null
+          service: string
           start_time: string
+          status: string | null
+          through_glow: boolean | null
           transcript: string | null
           updated_at: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
-          duration: string
+          customer_name: string
+          details?: string | null
+          duration?: string | null
           id?: string
-          phone: string
-          reason: string
+          is_booking?: boolean | null
+          phone?: string | null
+          reason?: string | null
           sentiment?: number | null
+          service: string
           start_time?: string
+          status?: string | null
+          through_glow?: boolean | null
           transcript?: string | null
           updated_at?: string | null
           user_id: string
         }
         Update: {
           created_at?: string
+          customer_name?: string
+          details?: string | null
+          duration?: string | null
+          id?: string
+          is_booking?: boolean | null
+          phone?: string | null
+          reason?: string | null
+          sentiment?: number | null
+          service?: string
+          start_time?: string
+          status?: string | null
+          through_glow?: boolean | null
+          transcript?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "call_log_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      call_records: {
+        Row: {
+          created_at: string
+          customer_name: string | null
+          details: string | null
+          duration: string
+          id: string
+          phone: string
+          reason: string
+          sentiment: number | null
+          service: string | null
+          start_time: string
+          through_glow: boolean | null
+          transcript: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          customer_name?: string | null
+          details?: string | null
+          duration: string
+          id?: string
+          phone: string
+          reason: string
+          sentiment?: number | null
+          service?: string | null
+          start_time?: string
+          through_glow?: boolean | null
+          transcript?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          customer_name?: string | null
+          details?: string | null
           duration?: string
           id?: string
           phone?: string
           reason?: string
           sentiment?: number | null
+          service?: string | null
           start_time?: string
+          through_glow?: boolean | null
           transcript?: string | null
           updated_at?: string | null
           user_id?: string

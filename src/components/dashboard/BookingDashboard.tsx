@@ -23,13 +23,12 @@ export function BookingDashboard({ onBookingSelect, onTranscriptOpen }: BookingD
     if (!userId) return
 
     const fetchData = async () => {
-      // Fetch recent calls
+      // Fetch recent calls - removed limit as it's handled by pagination in RecentCallsTable
       const { data: callsData } = await supabase
         .from('call_records')
         .select('*')
         .eq('user_id', userId)
         .order('start_time', { ascending: false })
-        .limit(5)
 
       if (callsData) {
         setRecentCalls(callsData)
