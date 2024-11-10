@@ -12,7 +12,7 @@ const VideoDemo = () => {
   useEffect(() => {
     const getVideoUrl = async () => {
       try {
-        // First, list files in the videos bucket to get the actual filename
+        // List files in the videos bucket to get the actual filename
         const { data: files, error: listError } = await supabase
           .storage
           .from('videos')
@@ -53,7 +53,7 @@ const VideoDemo = () => {
         toast({
           variant: "destructive",
           title: "Error loading video",
-          description: "Please try refreshing the page.",
+          description: error instanceof Error ? error.message : "Please try refreshing the page.",
         });
       } finally {
         setLoading(false);
