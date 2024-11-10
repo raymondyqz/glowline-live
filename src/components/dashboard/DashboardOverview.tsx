@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react"
 import { supabase } from "@/integrations/supabase/client"
 import { useSessionContext } from "@supabase/auth-helpers-react"
-import { startOfDay, endOfDay } from 'date-fns'
+import { startOfDay, endOfDay, subDays } from 'date-fns'
 import { ChartCard } from './ChartCard'
-import { TodayActivity } from './TodayActivity'
+import { BookingStatistics } from './BookingStatistics'
 
 interface DashboardOverviewProps {
   onPageChange: (page: string) => void;
 }
 
 export function DashboardOverview({ onPageChange }: DashboardOverviewProps) {
-  const [todayStats, setTodayStats] = useState({ bookings: 0, calls: 0 })
   const [appointmentTypes, setAppointmentTypes] = useState<any[]>([])
   const [callLengths, setCallLengths] = useState<any[]>([])
   const [callCategories, setCallCategories] = useState<any[]>([])
+  const [pastWeekData, setPastWeekData] = useState<any[]>([])
   const { session } = useSessionContext()
   const userId = session?.user?.id
 
@@ -21,29 +21,30 @@ export function DashboardOverview({ onPageChange }: DashboardOverviewProps) {
     if (!userId) return
 
     const fetchDashboardData = async () => {
-      const today = startOfDay(new Date())
-      const todayEnd = endOfDay(new Date())
+      // Fetch past week data for the graph
+      const pastWeekData = []
+      for (let i = 6; i >= 0; i--) {
+        const date = subDays(new Date(), i)
+        const startTime = startOfDay(date)
+        const endTime = endOfDay(date)
 
-      // Fetch today's bookings count
-      const { count: bookingsCount } = await supabase
-        .from('bookings')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', userId)
-        .gte('booking_time', today.toISOString())
-        .lt('booking_time', todayEnd.toISOString())
+        const { data: callsData } = await supabase
+          .from('call_records')
+          .select('through_glow')
+          .eq('user_id', userId)
+          .gte('start_time', startTime.toISOString())
+          .lt('start_time', endTime.toISOString())
 
-      // Fetch today's calls
-      const { data: recentCalls } = await supabase
-        .from('call_records')
-        .select('*')
-        .eq('user_id', userId)
-        .order('start_time', { ascending: false })
-        .limit(5)
+        const throughGlow = callsData?.filter(call => call.through_glow).length || 0
+        const nonGlow = (callsData?.length || 0) - throughGlow
 
-      setTodayStats({
-        bookings: bookingsCount || 0,
-        calls: recentCalls?.length || 0
-      })
+        pastWeekData.push({
+          date: date.toISOString(),
+          callBookings: throughGlow,
+          nonCallBookings: nonGlow
+        })
+      }
+      setPastWeekData(pastWeekData)
 
       // Fetch and process appointment types
       const { data: bookingsData } = await supabase
@@ -121,11 +122,7 @@ export function DashboardOverview({ onPageChange }: DashboardOverviewProps) {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
-      <TodayActivity 
-        bookings={todayStats.bookings} 
-        calls={todayStats.calls} 
-        onPageChange={onPageChange} 
-      />
+      <BookingStatistics pastWeekData={pastWeekData} />
       <ChartCard
         title="Appointment Types"
         data={appointmentTypes}
