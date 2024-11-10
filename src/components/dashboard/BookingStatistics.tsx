@@ -11,7 +11,7 @@ export function BookingStatistics({ pastWeekData }: BookingStatisticsProps) {
   return (
     <Card className="bg-white/50 backdrop-blur-sm">
       <CardHeader>
-        <CardTitle className="text-lg text-purple-800">Booking Statistics</CardTitle>
+        <CardTitle className="text-lg text-purple-800">Call Statistics</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="mt-4">
