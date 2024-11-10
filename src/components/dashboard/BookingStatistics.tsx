@@ -46,6 +46,7 @@ export function BookingStatistics({ pastWeekData }: BookingStatisticsProps) {
                       return (
                         <div className="bg-white p-2 border border-gray-300 rounded shadow text-center">
                           <p className="text-xs text-purple-800">{`Date: ${format(new Date(label), 'MM/dd/yyyy')}`}</p>
+                          <p className="text-xs text-gray-600">{`Customer: ${payload[0].payload.customer_name || ''}`}</p>
                           <p className="text-xs text-blue-600">{`Calls through Glow: ${payload[0].value}`}</p>
                           <p className="text-xs text-red-600">{`Other Calls: ${payload[1].value}`}</p>
                           <p className="text-xs text-green-600">{`Total: ${Number(payload[0].value) + Number(payload[1].value)}`}</p>
