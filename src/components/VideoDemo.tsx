@@ -12,7 +12,24 @@ const VideoDemo = () => {
   useEffect(() => {
     const getVideoUrl = async () => {
       try {
-        // Create a signed URL directly for video-demo.mp4
+        // First check if the file exists
+        const { data: fileExists, error: existsError } = await supabase
+          .storage
+          .from('videos')
+          .list('', {
+            search: 'video-demo.mp4'
+          });
+
+        if (existsError) {
+          console.error('Error checking file existence:', existsError);
+          throw existsError;
+        }
+
+        if (!fileExists || fileExists.length === 0) {
+          throw new Error('Video file not found in bucket');
+        }
+
+        // If file exists, create a signed URL
         const { data: urlData, error: urlError } = await supabase
           .storage
           .from('videos')
