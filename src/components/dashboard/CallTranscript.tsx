@@ -9,14 +9,17 @@ interface CallTranscriptProps {
 
 export function CallTranscript({ booking, transcript }: CallTranscriptProps) {
   if (!booking) {
-    return <div className="text-purple-700">No booking selected</div>
+    return <div className="text-purple-700">No call record selected</div>
   }
 
   const keyDatapoints = [
     { label: 'Customer Name', value: booking.customer_name || 'Not specified' },
-    { label: 'Service', value: booking.service },
-    { label: 'Details', value: booking.details },
-    { label: 'Time', value: booking.time ? format(parseISO(booking.time), 'PPpp') : 'Not specified' },
+    { label: 'Service', value: booking.service || 'General Consultation' },
+    { label: 'Details', value: booking.details || 'General consultation and service discussion' },
+    { label: 'Time', value: booking.start_time ? format(parseISO(booking.start_time), 'PPpp') : 'Not specified' },
+    { label: 'Duration', value: booking.duration || 'Not specified' },
+    { label: 'Phone', value: booking.phone || 'Not specified' },
+    { label: 'Reason', value: booking.reason || 'Not specified' },
   ]
 
   const suggestions = [
