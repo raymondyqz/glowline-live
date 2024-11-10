@@ -25,11 +25,11 @@ const features = [
 
 const Features = () => {
   return (
-    <section className="py-20 bg-purple-50 relative overflow-hidden" id="features">
+    <section className="py-20 bg-white relative overflow-hidden" id="features">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -right-40 top-20 w-96 h-96 bg-purple-100 rounded-full blur-3xl" />
-        <div className="absolute -left-40 bottom-20 w-96 h-96 bg-purple-100 rounded-full blur-3xl" />
+        <div className="absolute -right-40 top-20 w-96 h-96 bg-purple-50 rounded-full blur-3xl" />
+        <div className="absolute -left-40 bottom-20 w-96 h-96 bg-purple-50 rounded-full blur-3xl" />
       </div>
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
