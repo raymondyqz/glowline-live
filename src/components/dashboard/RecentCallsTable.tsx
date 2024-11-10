@@ -144,8 +144,8 @@ export function RecentCallsTable({ recentCalls }: RecentCallsTableProps) {
           </DialogHeader>
           <CallTranscript 
             booking={{
-              service: selectedCall?.reason,
-              details: `Call Duration: ${selectedCall?.duration}`,
+              service: selectedCall?.service,
+              details: selectedCall?.details,
               time: selectedCall?.start_time,
               sentiment: selectedCall?.sentiment
             }} 
