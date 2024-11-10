@@ -12,21 +12,17 @@ const VideoDemo = () => {
   useEffect(() => {
     const getVideoUrl = async () => {
       try {
-        const { data, error } = await supabase
+        const { data } = supabase
           .storage
           .from('videos')
-          .createSignedUrl('video-demo.mp4', 3600); // 1 hour expiry
+          .getPublicUrl('video-demo.mp4');
 
-        if (error) {
-          console.error('Error creating signed URL:', error);
-          throw error;
+        if (!data?.publicUrl) {
+          throw new Error('No public URL generated');
         }
 
-        if (!data?.signedUrl) {
-          throw new Error('No signed URL generated');
-        }
-
-        setVideoUrl(data.signedUrl);
+        console.log('Video URL:', data.publicUrl); // Debug log
+        setVideoUrl(data.publicUrl);
       } catch (error) {
         console.error('Error loading video:', error);
         toast({
