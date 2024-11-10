@@ -21,27 +21,18 @@ export function DashboardOverview({ onPageChange }: DashboardOverviewProps) {
     if (!userId) return
 
     const fetchDashboardData = async () => {
-      // Fetch past week data for the graph
+      // Generate random data for the past week
       const pastWeekData = []
       for (let i = 6; i >= 0; i--) {
         const date = subDays(new Date(), i)
-        const startTime = startOfDay(date)
-        const endTime = endOfDay(date)
-
-        const { data: callsData } = await supabase
-          .from('call_records')
-          .select('through_glow')
-          .eq('user_id', userId)
-          .gte('start_time', startTime.toISOString())
-          .lt('start_time', endTime.toISOString())
-
-        const throughGlow = callsData?.filter(call => call.through_glow).length || 0
-        const nonGlow = (callsData?.length || 0) - throughGlow
+        // Generate random numbers, ensuring nonCallBookings is always higher than callBookings
+        const nonCallBookings = Math.floor(Math.random() * 15) + 10 // Random number between 10-25
+        const callBookings = Math.floor(Math.random() * (nonCallBookings - 5)) + 1 // Random number between 1 and (nonCallBookings - 5)
 
         pastWeekData.push({
           date: date.toISOString(),
-          callBookings: throughGlow,
-          nonCallBookings: nonGlow
+          callBookings,
+          nonCallBookings
         })
       }
       setPastWeekData(pastWeekData)
