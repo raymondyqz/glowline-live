@@ -25,9 +25,14 @@ export function DashboardOverview({ onPageChange }: DashboardOverviewProps) {
       const pastWeekData = []
       for (let i = 6; i >= 0; i--) {
         const date = subDays(new Date(), i)
-        // Generate random numbers, ensuring nonCallBookings is always higher than callBookings
-        const nonCallBookings = Math.floor(Math.random() * 15) + 10 // Random number between 10-25
-        const callBookings = Math.floor(Math.random() * (nonCallBookings - 5)) + 1 // Random number between 1 and (nonCallBookings - 5)
+        
+        // Generate total calls first (between 10-25)
+        const totalCalls = Math.floor(Math.random() * 16) + 10
+        
+        // Calculate Glow calls as 50-90% of total
+        const percentage = Math.random() * 0.4 + 0.5 // Random between 0.5 and 0.9
+        const callBookings = Math.floor(totalCalls * percentage)
+        const nonCallBookings = totalCalls - callBookings
 
         pastWeekData.push({
           date: date.toISOString(),
