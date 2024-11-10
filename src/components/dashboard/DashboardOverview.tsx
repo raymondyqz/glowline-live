@@ -1,84 +1,143 @@
-import { ChartCard } from "./ChartCard"
-import { BookingStatistics } from "./BookingStatistics"
-import { Button } from "@/components/ui/button"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { supabase } from "@/integrations/supabase/client"
 import { useSessionContext } from "@supabase/auth-helpers-react"
-import { subDays, format } from 'date-fns'
+import { startOfDay, endOfDay } from 'date-fns'
+import { ChartCard } from './ChartCard'
+import { TodayActivity } from './TodayActivity'
 
 interface DashboardOverviewProps {
   onPageChange: (page: string) => void;
 }
 
 export function DashboardOverview({ onPageChange }: DashboardOverviewProps) {
-  const [pastWeekData, setPastWeekData] = useState<any[]>([])
+  const [todayStats, setTodayStats] = useState({ bookings: 0, calls: 0 })
+  const [appointmentTypes, setAppointmentTypes] = useState<any[]>([])
+  const [callLengths, setCallLengths] = useState<any[]>([])
+  const [callCategories, setCallCategories] = useState<any[]>([])
   const { session } = useSessionContext()
   const userId = session?.user?.id
 
   useEffect(() => {
     if (!userId) return
 
-    const fetchData = async () => {
-      // Fetch past week data
-      const pastWeekStats = []
-      for (let i = 6; i >= 0; i--) {
-        const date = subDays(new Date(), i)
-        const startOfDay = new Date(date.setHours(0, 0, 0, 0))
-        const endOfDay = new Date(date.setHours(23, 59, 59, 999))
+    const fetchDashboardData = async () => {
+      const today = startOfDay(new Date())
+      const todayEnd = endOfDay(new Date())
 
-        const { data: dayBookings } = await supabase
-          .from('bookings')
-          .select('*')
-          .eq('user_id', userId)
-          .gte('booking_time', startOfDay.toISOString())
-          .lt('booking_time', endOfDay.toISOString())
+      // Fetch today's bookings count
+      const { count: bookingsCount } = await supabase
+        .from('bookings')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', userId)
+        .gte('booking_time', today.toISOString())
+        .lt('booking_time', todayEnd.toISOString())
 
-        if (dayBookings) {
-          const callBookings = dayBookings.filter(b => b.is_call_booking).length
-          const nonCallBookings = dayBookings.length - callBookings
-          
-          pastWeekStats.push({
-            date: format(startOfDay, 'yyyy-MM-dd'),
-            callBookings,
-            nonCallBookings,
-            totalBookings: dayBookings.length
-          })
-        }
+      // Fetch today's calls
+      const { data: recentCalls } = await supabase
+        .from('call_records')
+        .select('*')
+        .eq('user_id', userId)
+        .order('start_time', { ascending: false })
+        .limit(5)
+
+      setTodayStats({
+        bookings: bookingsCount || 0,
+        calls: recentCalls?.length || 0
+      })
+
+      // Fetch and process appointment types
+      const { data: bookingsData } = await supabase
+        .from('bookings')
+        .select('service')
+        .eq('user_id', userId)
+
+      if (bookingsData) {
+        const serviceCount = bookingsData.reduce((acc: any, curr) => {
+          acc[curr.service] = (acc[curr.service] || 0) + 1
+          return acc
+        }, {})
+
+        setAppointmentTypes(
+          Object.entries(serviceCount).map(([name, value]) => ({
+            name,
+            value
+          }))
+        )
       }
-      setPastWeekData(pastWeekStats)
+
+      // Fetch and process call lengths
+      const { data: callsData } = await supabase
+        .from('call_records')
+        .select('duration')
+        .eq('user_id', userId)
+
+      if (callsData) {
+        const durationRanges = {
+          '0-5m': 0,
+          '5-10m': 0,
+          '10-15m': 0,
+          '15m+': 0
+        }
+
+        callsData.forEach(call => {
+          const minutes = parseInt(call.duration.split('m')[0])
+          if (minutes <= 5) durationRanges['0-5m']++
+          else if (minutes <= 10) durationRanges['5-10m']++
+          else if (minutes <= 15) durationRanges['10-15m']++
+          else durationRanges['15m+']++
+        })
+
+        setCallLengths(
+          Object.entries(durationRanges).map(([name, value]) => ({
+            name,
+            value
+          }))
+        )
+      }
+
+      // Fetch and process call categories
+      const { data: callCategories } = await supabase
+        .from('call_records')
+        .select('reason')
+        .eq('user_id', userId)
+
+      if (callCategories) {
+        const reasonCount = callCategories.reduce((acc: any, curr) => {
+          acc[curr.reason] = (acc[curr.reason] || 0) + 1
+          return acc
+        }, {})
+
+        setCallCategories(
+          Object.entries(reasonCount).map(([name, value]) => ({
+            name,
+            value
+          }))
+        )
+      }
     }
 
-    fetchData()
+    fetchDashboardData()
   }, [userId])
 
-  const serviceData = [
-    { name: "Hair Care", value: 35 },
-    { name: "Skin Care", value: 25 },
-    { name: "Veterinary", value: 20 },
-    { name: "Other", value: 20 },
-  ]
-
-  const timeData = [
-    { name: "Morning", value: 30 },
-    { name: "Afternoon", value: 40 },
-    { name: "Evening", value: 30 },
-  ]
-
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <div className="col-span-2">
-        <BookingStatistics pastWeekData={pastWeekData} />
-      </div>
-      <ChartCard title="Services" data={serviceData} />
-      <ChartCard title="Peak Hours" data={timeData} />
-      <div className="md:col-span-1">
-        <Button
-          className="w-full"
-          onClick={() => onPageChange('bookings')}
-        >
-          View All Bookings
-        </Button>
-      </div>
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+      <TodayActivity 
+        bookings={todayStats.bookings} 
+        calls={todayStats.calls} 
+        onPageChange={onPageChange} 
+      />
+      <ChartCard
+        title="Appointment Types"
+        data={appointmentTypes}
+      />
+      <ChartCard
+        title="Call Lengths"
+        data={callLengths}
+      />
+      <ChartCard
+        title="Call Categories"
+        data={callCategories}
+      />
     </div>
   )
 }
