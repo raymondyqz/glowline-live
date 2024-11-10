@@ -80,17 +80,17 @@ const MediaDemo = () => {
   }, [toast]);
 
   return (
-    <section className="py-20 bg-purple-50/50 relative overflow-hidden" id="demo">
+    <section className="py-20 bg-white relative overflow-hidden" id="demo">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute right-0 top-0 w-96 h-96 bg-purple-100/50 rounded-full blur-3xl" />
-        <div className="absolute -left-48 bottom-0 w-96 h-96 bg-purple-100/50 rounded-full blur-3xl" />
+        <div className="absolute right-0 top-0 w-96 h-96 bg-purple-50/50 rounded-full blur-3xl" />
+        <div className="absolute -left-48 bottom-0 w-96 h-96 bg-purple-50/50 rounded-full blur-3xl" />
       </div>
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-purple-800 mb-8">
-            Experience Glowline
+            Experience the Glow
           </h2>
           
           <Tabs defaultValue="audio" className="w-full">
